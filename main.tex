@@ -1,14 +1,108 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[12pt]{article}
 
-\title{STA4000 Notes}
-\author{Alexander He}
-\date{July 2026}
+% --------------------
+% Packages
+% --------------------
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{setspace}
+
+% --------------------
+% Theorem Environments
+% --------------------
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\renewcommand{\abstractname}{\Large\textbf{Abstract}}
+
+\theoremstyle{plain}
+
+\title{
+    \vspace{2cm}
+    \textbf{STA4000: Optimal Transport for Machine Learners}\\[0.5cm]
+    
+    \large A Reading Course Report
+    \vspace{1cm}
+}
+
+\author{
+    Alexander He\\
+    MSc, Department of Statistical Sciences\\
+    University of Toronto
+}
+
+\date{
+    \vspace{0.5cm}
+    Master's Reading Course in Statistics\\
+    Advisor: Prof. Ting-Kam Leonard Wong\\
+    \vspace{0.5cm}
+    \today
+}
+
 
 \begin{document}
 
 \maketitle
 
-\section{Introduction}
+\thispagestyle{empty}
+
+\newpage
+
+% --------------------
+% Abstract
+% --------------------
+
+\begin{abstract}
+\begin{spacing}{1.5}
+\normalsize
+\bigskip
+Optimal transport provides a mathematical framework for computing the
+most cost-efficient way of transporting one probability distribution of mass
+into another. In recent years, it has found widespread applications in computer science, engineering, statistics, economics, cell biology and other fields.
+Topics include: Monge and Kantorovich formulation, Wasserstein distances,
+c-cyclical monotonicity, dual problems, entropic regularization, statistical
+convergence, gradient flows, generalized optimal transport problems (Weak
+OT, unbalanced OT, Wasserstein barycenters, etc). This course will follow
+the main text of ”Optimal Transport for Machine Learners” by Gabriel Peyré.
+Computational approaches and numerical algorithms will also be introduced.
+Weekly discussions involve literature reviews on recent research papers and
+presenting derivations / code implementations from the textbook(s).
+\newline
+\newline
+Pre/Co-Requisites: Graduate Real Analysis, Graduate Probability.
+\newline
+Supplemental Readings: Statistical Optimal Transport by Chewi et al, Topics in Optimal Transportation by Villani.
+
+\end{spacing}
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+% ===================BODY TEXT GOES HERE======================
+\section{Monge Formulation}
+
+
+
+% ============================================================
 
 \end{document}

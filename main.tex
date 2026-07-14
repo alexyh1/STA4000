@@ -73,15 +73,11 @@
 \bigskip
 Optimal transport provides a mathematical framework for computing the
 most cost-efficient way of transporting one probability distribution of mass
-into another. In recent years, it has found widespread applications in computer science, engineering, statistics, economics, cell biology and other fields.
+into another. In recent years, it has found widespread applications in computer science, physics, statistics, economics, cell biology and other fields.
 Topics include: Monge and Kantorovich formulation, Wasserstein distances,
 c-cyclical monotonicity, dual problems, entropic regularization, statistical
 convergence, gradient flows, generalized optimal transport problems (Weak
-OT, unbalanced OT, Wasserstein barycenters, etc). This course will follow
-the main text of ”Optimal Transport for Machine Learners” by Gabriel Peyré.
-Computational approaches and numerical algorithms will also be introduced.
-Weekly discussions involve literature reviews on recent research papers and
-presenting derivations / code implementations from the textbook(s).
+OT, unbalanced OT, Wasserstein barycenters, etc). Computational approaches and numerical algorithms will also be introduced. Weekly discussions involve literature reviews on recent research papers and presenting derivations / code implementations from the textbook(s). While these notes closely follow the main arguments of ”Optimal Transport for Machine Learners” by Gabriel Peyré, this report will occasionally include my own examples, data exercises and results from literature reviews. Code implementations are available at \url{https://github.com/alexyh1/STA4000}.
 \newline
 \newline
 Pre/Co-Requisites: Graduate Real Analysis, Graduate Probability.
@@ -97,12 +93,88 @@ Supplemental Readings: Statistical Optimal Transport by Chewi et al, Topics in O
 
 \newpage
 
-
+\begin{spacing}{1}
 % ===================BODY TEXT GOES HERE======================
+
 \section{Monge Formulation}
 
+We will first proceed with some prerequisite knowledge for formulating the Optimal Transport problem.
 
+\subsection{Measures}
+\begin{definition}[Probability Simplex]
+    The probability simplex of length $n$ is defined by $\Sigma_n = \{a \in \mathbb{R}^n_{\geq 0}: \sum_{i = 1}^n a_i = 1\}$.
+    \newline
+    Elements of the $\Sigma_n$ are commonly called probability vectors.
+\end{definition}
+
+\begin{definition}[Discrete Measure]
+A discrete measure with weights $a$ $x_1, ..., x_n \in X$ is defined by $\mu = \sum_{i = 1}^n a_i \delta_{x_i}$ where $\delta_{x_i}$ is the Dirac measure located at $x_i \in \mathbb{R}$.
+\newline
+$\mu$ is a probability measure if $a \in \Sigma_n$ ($\mu: X \rightarrow [0, \infty]$ such that $\mu(X) = 1$, monotonicity, sub-additivity and $\sigma$-additivity hold).
+\end{definition}
+
+We require sufficient regularity conditions for many of the results in the book; unless otherwise mentioned, we will be working with positive Borel measures $\mu \in \mathcal{M}(X)$ on a topological metric space $(X, d)$ where $\mu$ is defined on all Borel sets (Complements, unions, or intersections of open sets in $X$). In general, we will be working on positive probability measures denoted $\mu \in \mathcal{M}(X)$. We usually also assume that the metric space $(X, d)$ is Polish such that it is complete (Every Cauchy sequence converges) and there exists a countable dense set in $X$ (Ex. The general topology on $\mathbb{R}$ is Polish, whereas the topology induced by the discrete metric is not).
+
+\begin{definition}[Support of Measure]
+    The support of a Borel measure $\mu$ on a metric space ($X$, d) is given by $\text{supp}(\mu) = \{x \in X: \mu(B_{\varepsilon}(x)) > 0 \ \forall \varepsilon > 0\}$.
+\end{definition}
+
+\begin{definition}[Radon Measure]
+A Radon measure $\mu$ on a metric space $X$ is a Borel measure such that $\mu(K) < \infty$ for all compact sets $K \subset X$, $\mu(E) = \inf\{\mu(U): U \supset E, U \text{ is open}\}$ for Borel sets $E$ and $\mu(A) = \sup\{\mu(B): B \subset A, B \text{ is compact}\}$.
+\end{definition}
+
+We can restrict our attention to Radon measures as every Polish space is a Radon space, such that Borel probability measures in a Polish space (Which we consider) are indeed Radon measures by definition.
+
+\begin{proposition}[Discretization of Lebesgue Integral]
+    Suppose $f$ is a measurable function ($\{x: f(x) < t\}$ are Borel sets wrt $\mu$), then $\langle f, \mu \rangle = \int_X f(x)d\mu(x) = \sum_{i = 1}^n a_i f(x_i)$
+\end{proposition}
+
+The discretization follows from Riesz-Markov-Kakutani's Theorem such that integration on a finite compact space and measure admits a continuous linear functional on the Banach space of continuous functions and vice-versa.
+
+\begin{definition}[Relative Density]
+    If $\mu$ is absolutely continuous to a reference measure $\lambda$ denoted $\mu << \lambda$ ($\lambda(A) = 0 \Rightarrow \mu(A) = 0$) then the relative density is its Radon-Nikodym derivative $\rho_\mu = \frac{d\mu}{d\lambda}$, and for all continuous functions $h$ on $X$, $\int_X h(x)d\mu(x) = \int_X h(x) \rho_\mu(x) d\lambda(x)$.
+\end{definition}
+
+\begin{definition}[Total Variation]
+    The total variation of a finite signed Radon measure $\mu$ on a compact space $X$ is given by $\lvert \mu \rvert_{TV} = \sup_{f \in \mathcal{C}(X)}\{\langle f, \mu \rangle: \lvert f \rvert _\infty \leq 1\}$
+\end{definition}
+
+\begin{definition}[Absolute Value of Measures]
+    The measure-theoretic equivalent definition of total variation is given by its absolute value denoted as $\lvert \mu \rvert (A) = \sup_{A = \cup_i B_i} \sum_i \lvert \mu(B_i) \rvert$ ie finite or countable measurable partitions of $A$.
+\end{definition}
+
+\begin{definition}
+    
+\end{definition}
+
+\newpage
+\section{Kantorovich Formulation}
+
+\newpage
+\section{Dual Problems}
+
+\newpage
+\section{Sinkhorn Regularization}
+
+\newpage
+\section{Convergence of Regularization Problems}
+
+\newpage
+\section{Generalized Wasserstein Distances}
+
+\newpage
+\section{Generalized Optimal Transport Problems}
+
+\newpage
+\section{Dynamic Optimal Transport}
+
+\newpage
+\section{Wasserstein Gradient Flows}
 
 % ============================================================
+\end{spacing}
+
+% BIBLIOGRAPHY
+
 
 \end{document}

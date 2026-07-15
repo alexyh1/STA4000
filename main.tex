@@ -14,6 +14,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{setspace}
+\usepackage{bigints}
 
 % --------------------
 % Theorem Environments
@@ -27,7 +28,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark}{Remark}
 \renewcommand{\abstractname}{\Large\textbf{Abstract}}
 
 \theoremstyle{plain}
@@ -126,26 +127,48 @@ A Radon measure $\mu$ on a metric space $X$ is a Borel measure such that $\mu(K)
 We can restrict our attention to Radon measures as every Polish space is a Radon space, such that Borel probability measures in a Polish space (Which we consider) are indeed Radon measures by definition.
 
 \begin{proposition}[Discretization of Lebesgue Integral]
-    Suppose $f$ is a measurable function ($\{x: f(x) < t\}$ are Borel sets wrt $\mu$), then $\langle f, \mu \rangle = \int_X f(x)d\mu(x) = \sum_{i = 1}^n a_i f(x_i)$
+    Suppose $f$ is a measurable function ($\{x: f(x) < t\}$ are Borel sets wrt $\mu$), then $\langle f, \mu \rangle = \displaystyle \int_X f(x)d\mu(x) = \sum_{i = 1}^n a_i f(x_i)$
 \end{proposition}
 
 The discretization follows from Riesz-Markov-Kakutani's Theorem such that integration on a finite compact space and measure admits a continuous linear functional on the Banach space of continuous functions and vice-versa.
 
 \begin{definition}[Relative Density]
-    If $\mu$ is absolutely continuous to a reference measure $\lambda$ denoted $\mu << \lambda$ ($\lambda(A) = 0 \Rightarrow \mu(A) = 0$) then the relative density is its Radon-Nikodym derivative $\rho_\mu = \frac{d\mu}{d\lambda}$, and for all continuous functions $h$ on $X$, $\int_X h(x)d\mu(x) = \int_X h(x) \rho_\mu(x) d\lambda(x)$.
+    If $\mu$ is absolutely continuous to a reference measure $\lambda$ denoted $\mu << \lambda$ ($\lambda(A) = 0 \Rightarrow \mu(A) = 0$) then the relative density is its Radon-Nikodym derivative $\rho_\mu = \frac{d\mu}{d\lambda}$, and for all continuous functions $h$ on $X$, $\displaystyle \int_X h(x)d\mu(x) = \displaystyle \int_X h(x) \rho_\mu(x) d\lambda(x)$.
 \end{definition}
 
 \begin{definition}[Total Variation]
     The total variation of a finite signed Radon measure $\mu$ on a compact space $X$ is given by $\lvert \mu \rvert_{TV} = \sup_{f \in \mathcal{C}(X)}\{\langle f, \mu \rangle: \lvert f \rvert _\infty \leq 1\}$
 \end{definition}
 
+It follows trivially that total variation of probability measures are always equal to 1.
+
 \begin{definition}[Absolute Value of Measures]
     The measure-theoretic equivalent definition of total variation is given by its absolute value denoted as $\lvert \mu \rvert (A) = \sup_{A = \cup_i B_i} \sum_i \lvert \mu(B_i) \rvert$ ie finite or countable measurable partitions of $A$.
 \end{definition}
 
-\begin{definition}
-    
-\end{definition}
+\begin{proposition}[Dual Definition of Total Variation]
+    For a finite signed Radon measure $\mu$ on a compact space $X$, we have $\lvert \mu \rvert_{TV} = \lvert \mu \rvert (X)$.
+\end{proposition}
+
+\begin{proof}
+    To show the forward inequality, it follows that
+    \[
+    \lvert \displaystyle \int f d\mu \rvert \leq \displaystyle \int \lvert f \rvert \ d \lvert \mu \rvert \leq \lvert f \rvert_\infty \lvert \mu \rvert (X).
+    \]
+    For the reverse inequality, let $\mu = \mu^+ - \mu^-$ via Jordan decomposition such that $\lvert \mu \rvert = \mu^+ + \mu^-$, then $s = \frac{d\mu}{d\lvert \mu \rvert}$ = -1 or 1 excluding null sets, such that $d \mu = s \ d \lvert \mu \rvert$. By regularity of Radon measures on compact spaces we can find a sequence of continuous functions $f_k \in L^1 (\lvert \mu \rvert)$ (i.e. $\displaystyle \int \lvert f_k \rvert \ d\mu < \infty$) that approximates $s$ with $\lvert f_k \rvert_\infty \leq 1$, therefore
+    \[
+    \displaystyle \int f_k d\mu \rightarrow \displaystyle \int s d\mu = \lvert \mu \rvert (X) . \qedhere.
+    \]
+        
+\end{proof}
+
+\begin{remark}
+    For continuous measures $d\mu = \rho_\mu d\lambda$ and $d\nu = \rho_\nu d\lambda$ we obtain $\lvert \mu - \nu \rvert_{TV} = \displaystyle \int_X \lvert \rho_\mu(x) - \rho_\nu(x) \rvert d\lambda(x)$, whereas the discrete formula is given by $\lvert \mu - \nu \rvert_{TV} = \sum_{k} \lvert a_k - b_k \rvert$ when $\mu = \sum_k a_k \delta_{z_k}$ and $\nu = \sum_k b_k \delta_{z_k}$ (Unionize supports and set missing coefficients to 0).
+    \newline
+    For probability measures, integration cleanly simplifies to $\displaystyle \int_X f(x) d\mu(x) = \mathbb{E}(f(X))$.
+\end{remark}
+
+
 
 \newpage
 \section{Kantorovich Formulation}

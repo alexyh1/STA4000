@@ -15,6 +15,7 @@
 \usepackage{algorithmic}
 \usepackage{setspace}
 \usepackage{bigints}
+\usepackage{dsfont}
 
 % --------------------
 % Theorem Environments
@@ -27,7 +28,7 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}{Example}
+\newtheorem*{example}{Example}
 \newtheorem*{remark}{Remark}
 \renewcommand{\abstractname}{\Large\textbf{Abstract}}
 
@@ -78,7 +79,7 @@ into another. In recent years, it has found widespread applications in computer 
 Topics include: Monge and Kantorovich formulation, Wasserstein distances,
 c-cyclical monotonicity, dual problems, entropic regularization, statistical
 convergence, gradient flows, generalized optimal transport problems (Weak
-OT, unbalanced OT, Wasserstein barycenters, etc). Computational approaches and numerical algorithms will also be introduced. Weekly discussions involve literature reviews on recent research papers and presenting derivations / code implementations from the textbook(s). While these notes closely follow the main arguments of ”Optimal Transport for Machine Learners” by Gabriel Peyré, this report will occasionally include my own examples, data exercises and results from literature reviews. Code implementations are available at \url{https://github.com/alexyh1/STA4000}.
+OT, unbalanced OT, Wasserstein barycenters, etc). Computational approaches and numerical algorithms will also be introduced. Weekly discussions involve literature reviews on recent research papers and presenting derivations / code implementations from the textbook(s). While these notes closely follow the main text of ”Optimal Transport for Machine Learners” by Gabriel Peyré, I will try to make it instructional by including my own examples / explanations, data exercises and results from literature reviews. Code implementations are available at \url{https://github.com/alexyh1/STA4000}.
 \newline
 \newline
 Pre/Co-Requisites: Graduate Real Analysis, Graduate Probability.
@@ -146,6 +147,19 @@ It follows trivially that total variation of probability measures are always equ
     The measure-theoretic equivalent definition of total variation is given by its absolute value denoted as $\lvert \mu \rvert (A) = \sup_{A = \cup_i B_i} \sum_i \lvert \mu(B_i) \rvert$ ie finite or countable measurable partitions of $A$.
 \end{definition}
 
+\begin{example}
+    Let $\mu$ be a measure that is absolutely continuous to the Lebesgue measure such that $d\mu = (3x -2) \mathds{1}_{[-1, 1]}dx$. Then the total variation of $\mu$ via 1.7 and 1.8 is given by 
+    \[
+    \lvert \mu([-1, 1]) \rvert = \lvert \mu([-1, \frac{2}{3}])| + \lvert \mu((\frac{2}{3}, 1]) \rvert,
+    \]
+    Then the Lebesgue integrals can be easily computed via 1.6 as
+    \[
+    \lvert \mu \rvert ([-1, 1]) =  \lvert \displaystyle \int_{-1}^{\frac{2}{3}} (3x-2)dx \rvert + \displaystyle \int_{\frac{2}{3}}^1 (3x-2)dx = \frac{25}{6}+\frac{1}{6} = \frac{13}{3}.
+    \]
+\end{example}
+
+Notice that we can verify that the definitions of total variation are indeed equivalent via the following proposition.
+
 \begin{proposition}[Dual Definition of Total Variation]
     For a finite signed Radon measure $\mu$ on a compact space $X$, we have $\lvert \mu \rvert_{TV} = \lvert \mu \rvert (X)$.
 \end{proposition}
@@ -158,8 +172,7 @@ It follows trivially that total variation of probability measures are always equ
     For the reverse inequality, let $\mu = \mu^+ - \mu^-$ via Jordan decomposition such that $\lvert \mu \rvert = \mu^+ + \mu^-$, then $s = \frac{d\mu}{d\lvert \mu \rvert}$ = -1 or 1 excluding null sets, such that $d \mu = s \ d \lvert \mu \rvert$. By regularity of Radon measures on compact spaces we can find a sequence of continuous functions $f_k \in L^1 (\lvert \mu \rvert)$ (i.e. $\displaystyle \int \lvert f_k \rvert \ d\mu < \infty$) that approximates $s$ with $\lvert f_k \rvert_\infty \leq 1$, therefore
     \[
     \displaystyle \int f_k d\mu \rightarrow \displaystyle \int s d\mu = \lvert \mu \rvert (X) . \qedhere.
-    \]
-        
+    \]   
 \end{proof}
 
 \begin{remark}
@@ -167,6 +180,46 @@ It follows trivially that total variation of probability measures are always equ
     \newline
     For probability measures, integration cleanly simplifies to $\displaystyle \int_X f(x) d\mu(x) = \mathbb{E}(f(X))$.
 \end{remark}
+
+
+\subsection{Push-Forwards}
+\begin{definition}[Push-Forward]
+    For a continuous map $T: X \rightarrow Y$, the push-forward measure is $\nu = T_\# \mu \in \mathcal{M}(Y)$ such that $\mu \in \mathcal{M}(X)$ satisfies
+    \[
+    \forall h \in \mathcal{C}(Y), \displaystyle \int_Y h(y)d\nu(y) = \displaystyle \int_X h(T(x))d\mu(x),
+    \]
+    Where $T_\#: \mathcal{M}(X) \rightarrow \mathcal{M}(Y)$ is the push-forward map.
+    Equivalently, $\nu(B) = \mu(T^{-1}(B))$.
+\end{definition}
+
+\begin{remark}
+    Discrete measures follow neatly such that for $\mu = \sum_i a_i \delta_{x_i}$, its push-forward measure is given by $\nu = \sum_i a_i \delta_{T(x_i)}$.
+\end{remark}
+
+The existence of push-forward map begs the question of whether a function can be "pulled back" into the domain of $T$ / metric space $X$, which is outlined in the definition below. 
+
+\begin{definition}[Pull-Back]
+    The pull-back by $T$ denoted $T^\#: \mathcal{C}(Y) \rightarrow \mathcal{C}(X)$ such that for a continuous function $g$, $T^\#g = g \circ T$. From Definition 1.10 we immediately obtain
+    \[
+    \displaystyle \int_X T^\#g(x)d\mu(x) = \displaystyle \int_Y g(y)d(T_\#\mu)(y).
+    \]
+\end{definition}
+
+\begin{theorem}[Change of Variables for Relative Densities]
+    Let $\mu, \nu$ have relative densities $\rho_\mu, \rho_\nu$ on $\mathbb{R}^d$, if $T$ is a $C^1$ diffeomorphism and $T$ pushes $\mu$ to $\nu$, then
+    \[
+    \rho_\nu(T(x)) = \rho_\mu(T^{-1}(y))\frac{1}{\det(T'(T^{-1}(y)))}.
+    \]
+\end{theorem}
+
+\begin{proof}
+    Using the Radon-Nikodym formulation of the relative densities (Definition 1.6) and setting $y = T(x)$ along with change of variables we get that
+    \[
+    \displaystyle \int_Y h(y)\rho_\nu(y)dy = \displaystyle \int_Y h(y) d\nu(y) = \displaystyle \int_X h(T(x))d\mu(x) \]
+    \[ = \displaystyle \int_X h(T(x)) \rho_\mu dx = \displaystyle \int_Y h(y) \rho_\mu(T^{-1}(y))\frac{dy}{\det(T'(T^{-1}(y)))}
+    \]
+    for all $h$ therefore equality of the integrands hold. By bijectivity of $T$ we get $\rho_\mu(x) = \lvert \det(T'(x))\rvert \rho_\nu(T(x))$ completing the proof.
+\end{proof}
 
 
 

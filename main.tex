@@ -128,13 +128,19 @@ A Radon measure $\mu$ on a metric space $X$ is a Borel measure such that $\mu(K)
 We can restrict our attention to Radon measures as every Polish space is a Radon space, such that Borel probability measures in a Polish space (Which we consider) are indeed Radon measures by definition.
 
 \begin{proposition}[Discretization of Lebesgue Integral]
-    Suppose $f$ is a measurable function ($\{x: f(x) < t\}$ are Borel sets wrt $\mu$), then $\langle f, \mu \rangle = \displaystyle \int_X f(x)d\mu(x) = \sum_{i = 1}^n a_i f(x_i)$
+    Suppose $f$ is a measurable function ($\{x: f(x) < t\}$ are Borel sets wrt $\mu$), then 
+    \[
+    \langle f, \mu \rangle = \displaystyle \int_X f(x)d\mu(x) = \sum_{i = 1}^n a_i f(x_i).
+    \]
 \end{proposition}
 
 The discretization follows from Riesz-Markov-Kakutani's Theorem such that integration on a finite compact space and measure admits a continuous linear functional on the Banach space of continuous functions and vice-versa.
 
 \begin{definition}[Relative Density]
-    If $\mu$ is absolutely continuous to a reference measure $\lambda$ denoted $\mu << \lambda$ ($\lambda(A) = 0 \Rightarrow \mu(A) = 0$) then the relative density is its Radon-Nikodym derivative $\rho_\mu = \frac{d\mu}{d\lambda}$, and for all continuous functions $h$ on $X$, $\displaystyle \int_X h(x)d\mu(x) = \displaystyle \int_X h(x) \rho_\mu(x) d\lambda(x)$.
+    If $\mu$ is absolutely continuous to a reference measure $\lambda$ denoted $\mu << \lambda$ ($\lambda(A) = 0 \Rightarrow \mu(A) = 0$) then the relative density is its Radon-Nikodym derivative $\rho_\mu = \frac{d\mu}{d\lambda}$, and for all continuous functions $h$ on $X$, 
+    \[
+    \displaystyle \int_X h(x)d\mu(x) = \displaystyle \int_X h(x) \rho_\mu(x) d\lambda(x).
+    \]
 \end{definition}
 
 \begin{definition}[Total Variation]
@@ -224,7 +230,7 @@ The existence of push-forward map begs the question of whether a function can be
 \begin{example}
     Let $\mu \sim N(0, I_2), \nu \sim N(b, a^2I_2)$ for $a, b \in \mathbb{R}$ and $a > 0$ such that $T(x) = ax + b$ is a $C^1$ diffeomorphism and $\nu$ indeed the push-foward map of $T$. Then $T^{-1}(y) = \frac{x - b}{a}$, $T' = aI$ such that
     \[
-    p_\nu(y) = \rho_\mu(\frac{y - b}{a}) \times \frac{1}{a} = \frac{1}{(2\pi)a} \exp\{-\frac{1}{2}(\frac{y - b}{a})^T I (\frac{y - b}{a})\}
+    \rho_\nu(y) = \rho_\mu(\frac{y - b}{a}) \times \frac{1}{a} = \frac{1}{(2\pi)a} \exp\{-\frac{1}{2}(\frac{y - b}{a})^T I (\frac{y - b}{a})\}
     \]
     \[
     = \frac{1}{2a\pi}\exp\{-\frac{1}{2}(y-b)^T (a^2I)^{-1} (y - b)\}
@@ -233,7 +239,71 @@ The existence of push-forward map begs the question of whether a function can be
 \end{example}
 
 \subsection{Monge's Problem}
+\begin{definition}[Monge Problem]
+For two measures $\mu \in \mathcal{M}_1^+(X), \nu \in \mathcal{M}_1^+(Y)$ and a cost function $c: X \times Y \rightarrow \mathbb{R}$, Monge's problem is formulated as
+\[
+\mathcal{M}_c(\mu, \nu) = \inf_{T: X \rightarrow Y} \{\int_X c(x, T(x))d\mu(x), T_\#\mu = \nu\}.
+\]
+In other words, $T$ satisfies the push-forward constraint of $\mu$ wrt $\nu$.
+\end{definition}
 
+\begin{remark}
+    Monge's problem for discrete probability measures $\mu = \sum_{i = 1}^n a_i \delta_{x_i}, \nu = \sum_{j = 1}^n b_j \delta_{y_i}$ is formulated as
+    \[
+    \mathcal{M}_c(\mu, \nu) = \inf_{T: X \rightarrow Y} \{\sum_{i = 1}^n a_ic(x_i, T(x_i)), \sum_{i: T(x_i) = y_j} a_i = b_j\}.
+    \]
+\end{remark}
+
+Notice that Monge's problem does not guarantee the existence of such a map; consider the Borel measures $\mu = \delta_1$ and $\nu = \frac{1}{2}\delta_{-1} + \frac{1}{2}\delta_2$, then there is no well-defined map $T$ that "splits" the single point into two. However, existence and uniqueness regularity conditions will be explored in section 1.4, and a more general solution will be discussed via Kantorovich. Here, we are able to show existence for atomless Borel measures on probability spaces.
+
+\begin{proposition}[Existence of Transport Maps from Atomless Distributions]
+    Let $\mu, \nu$ be Borel measures on Polish spaces and assume $\mu$ is atomless, then there exists a measurable map $T$ such that $T_\# \mu = \nu$.
+\end{proposition}
+
+\begin{proof}
+    It suffices to construct a map from $[0, 1]$ to $\nu$; choose a Borel isomorphism $i$ from the support of $\nu$ onto a Borel subset of $[0, 1]$, let $\beta = i_\#\nu$, and consider the inverse of the cdf of $\beta$, then this map sends Lebesgue measure on $[0, 1]$ to $\beta$ and is defined a.s. on $i(\text{supp}(\nu))$ and composing it with $i^{-1}$ and the source isomorphism completes the proof. \qedhere
+\end{proof}
+
+\begin{definition}[Monge Distance]
+    Suppose $X = Y$ and $c(x, y) = d(x, y)^p$ for some $p > 0$ and metric $d$, then the Monge Distance is defined as 
+    \[
+    \tilde{\mathcal{W}}_p(\mu, \nu)^p = \inf_{T: X \rightarrow X} \{\displaystyle \displaystyle \int_X d(x, T(x))^pd\mu(x); T_\#\mu = \nu\}
+    \]
+    where $\tilde{\mathcal{W}}_p^p = \infty$ if no such infimum exists.
+\end{definition}
+
+\begin{proposition}
+    Assume $X = Y$ is a metric space, then the quantity $\tilde{\mathcal{W}}_p$ is non-negative, vanishes only on the diagonal and satisfies the triangle inequality.
+\end{proposition}
+
+\begin{proof}
+    Non-negativity follows immediately. Notice on the diagonal, $\tilde{\mathcal{W}}_p(\mu, \nu) = 0$ then there exists a sequence of maps $T_k$ such that 
+    \[
+    \displaystyle \int_X d(x, T_k(x)^pd\mu(x) \rightarrow 0.
+    \]
+    Then for bounded 1-Lipschitz functions $h$,
+    \[
+    \lvert \displaystyle \int hd\nu - \displaystyle \int h d\mu \rvert = \lvert \displaystyle \int (h(T_k(x) - h(x))d\mu(x) \rvert \leq \int d_x(T_k(x)) d\mu(x) \leq (\int d_x(T_k(x))^p d\mu(x))^p \rightarrow 0.
+    \]
+    Since 1-Lipschitz functions separate probability measures on metric spaces, it follows that $\mu = \nu$.
+    \newline
+    \newline
+    The infinity case for the triangle inequality follows by contradiction such that for measures $\mu, \gamma, \nu$ with respective push-forward maps $S_\#\mu = \gamma, T_\# \gamma = \nu$ then composing $(S \circ T)_\#\mu = \nu$ contradicts $LHS = \infty$ by the infimum. Therefore for the finite case, pick $\varepsilon$ such that
+    \[
+    \mathcal{E}_\mu(S)^\frac{1}{p} \leq \mathcal{W}_p(\mu, \gamma) + \varepsilon, \ \ \mathcal{E}_\nu(T)^\frac{1}{p} \leq \mathcal{W}_p(\gamma, \nu)    \]
+    The composed map is indeed feasible such that
+    \[
+    \tilde{\mathcal{W}}_p(\mu, \nu) \leq (\displaystyle \int d(x, T(S(x))^pd\mu(x))^\frac{1}{p} \leq (\displaystyle \int d(x, S(x))^pd\mu(x))^\frac{1}{p} + (\displaystyle \int d(S(x), T(S(x))^pd\mu(x))^\frac{1}{p}
+    \]
+    \[
+    = \mathcal{E}_\mu(S)^\frac{1}{p} + \mathcal{E}_\nu(T)^\frac{1}{p} \leq\mathcal{W}_p(\mu, \gamma) + \mathcal{W}_p(\gamma, \nu) + 2\varepsilon
+    \]
+    Since $\varepsilon$ is arbitrary, this completes the proof. 
+\end{proof}
+
+In many cases Monge's distance is not well-defined, as well as $\tilde{\mathcal{W}_p}$ fails to be a metric; consider the case where $\mu \sim N(0, 1)$ and $\nu = \delta_1$, then $T = 1$ such that all the mass of $\mu$ is pushed to 1 with finite cost, but $\nu$ to $\mu$ is infeasible such that $\tilde{\mathcal{W}}_p(\nu, \mu) = \infty$. Neverless, we introduce several regularity conditions for existence and uniqueness of Monge's problem.
+
+\subsection{Regularity Conditions for Monge's Problem}
 
 \newpage
 \section{Kantorovich Formulation}

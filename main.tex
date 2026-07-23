@@ -17,6 +17,7 @@
 \usepackage{bigints}
 \usepackage{dsfont}
 \usepackage{caption}
+\usepackage{float}
 
 % --------------------
 % Theorem Environments
@@ -323,7 +324,7 @@ It easily follows that $\psi$ is unique $\mu$-almost everywhere up to an additiv
     \[
     \tilde{\mathcal{W}}_2(\mu, \nu)^2 = \displaystyle \int (x + 1)^2\frac{1}{\sqrt{2\pi}}\exp\{{-\frac{x^2}{2}\}} = 2
     \]
-    And $\psi(x) = x^2 +x$ is convex such that $T = \nabla \psi$.
+    And $\psi(x) = x^2 +x$ is convex such that $T = \nabla \psi \hfill \(\square\)$.
 
 \end{example}
 
@@ -374,7 +375,7 @@ For Monge formulations with a null constraint set, the displacement interpolatio
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{McCann.png}
-    \caption*{{\footnotesize \textit{Figure 1.1:} McCann Displacement Interpolation between $N(0, 1)$ and $\Gamma(1, 1)$ source and target densities respectively. Distribution becomes increasingly left-skewed.}}
+    \caption*{{\footnotesize \textit{Figure 1.4.1:} McCann Displacement Interpolation between $N(0, 1)$ and $\Gamma(1, 1)$ source and target densities respectively. Distribution becomes increasingly left-skewed.}}
     \label{fig:placeholder}
 \end{figure}
 
@@ -474,8 +475,39 @@ An alternative algorithm to build multivariate transport maps is via the Knothe-
     The proof follows from recursive construction; assume for $k = 1$ let $T_1$ be the monotone rearrangement between the first marginal of $\mu$ and $\nu$ respectively. Then suppose $T_1, ..., T_{k - 1}$ have already been constructed; denote $x_{<k} = (x_1, ..., x_{k - 1}), T_{< k} = (T_1, ..., T_{k - 1})$ and by induction $(T_{<k})_\# \mu_{<k} = \nu_{<k}$ pushing the first $k-1$ marginals. Define $T_k(x_{<k}, \ . \ )$ which is the 1D monotone rearrangement from the regular conditional laws of the $k$-th coordinate given to the previous coordinates of $\mu$ and $\nu$ respectively, which is non-decreasing and via chain rule, at step $k$ we get that the first $k$ coordinates of $T_\# \mu$ have the same conditional law as $\nu$ which converges in $d$ steps.
 \end{proof}
 
+Below is a simple numerical example for 2D anisotropic Gaussian distributions 
+\[
+\mu \sim N(\begin{bmatrix}
+    -2 \\
+    -2
+\end{bmatrix}, \begin{bmatrix}
+1 & 0.8 \\
+0.8 & 1
+\end{bmatrix}), \ \nu \sim N(\begin{bmatrix}
+    4 \\
+    4
+\end{bmatrix}, \begin{bmatrix}
+1 & -0.8 \\
+-0.8 & 1
+\end{bmatrix}).
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{KR_xmove.png}
+    \caption*{\footnotesize \textit{Figure 1.5.1:} Horizontal mass transport (x-move) by monotone rearrangement of the first marginal.}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{KR_ymove.png}
+    \caption*{\footnotesize \textit{Figure 1.5.2:} Vertical mass transport (y-move) by monotone rearrangement of conditional distributions.}
+    \label{fig:placeholder}
+\end{figure}
+
 \begin{remark}
-    While the Knothe-Rosenblatt solution is generally suboptimal, nevertheless it serves as an instructional example for visualizing transport snapshots, similar to the example illustrated in Figure 1.1. One special example of optimality is for the family of anisotropic Brenier maps such that it serves as the limiting distribution. 
+    While the Knothe-Rosenblatt solution is generally suboptimal, nevertheless it serves as an instructional example for visualizing transport snapshots, analogous to the displacement interpolation in Figure 1.1. One special example of optimality is for the family of anisotropic Brenier maps such that it serves as the limiting distribution. 
 \end{remark}
 
 \begin{proposition}[Convergence of Anisotropic Brenier Maps]

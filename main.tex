@@ -443,7 +443,7 @@ To solve 1.22 numerically it is possible to linearize the problem to a weighted 
 \end{proof}
 
 \begin{remark}
-    If $\mu$ is atomless then $T = \mathcal{C}_\nu^{-1} \circ \mathcal{C}_\mu$ is the Monge Optimal Transport map in 1D via Brenier's theorem when $c(x, y) = \lvert x - y \rvert^2$. An analogous closed-form solution for the 1D Kantorovich case will be discussed in Section 2. In fact, optimal transport maps compose for probability measures $\mu, \gamma, \nu$ such that $T_{\mu \rightarrow \gamma} = \mathcal{C}_\gamma^{-1} \circ \mathcal{C}_\mu, \ T_{\gamma \rightarrow \nu} = \mathcal{C}_\nu^{-1} \circ \mathcal{C}_\gamma$ then $T_{\mu \rightarrow \nu} = T_{\gamma \rightarrow \nu} \circ T_{\mu \rightarrow \gamma}$ satisifies the push-foward condition and is well-defined almost everywhere. This is a special case of the gluing lemma where the composition of maps is indeed the optimal transportation map.
+    If $\mu$ is atomless then $T = \mathcal{C}_\nu^{-1} \circ \mathcal{C}_\mu$ is the Monge Optimal Transport map in 1D via Brenier's theorem when $c(x, y) = \lvert x - y \rvert^2$. An analogous closed-form solution for the 1D Kantorovich case will be discussed in Section 2. In fact, optimal transport maps compose for probability measures $\mu, \gamma, \nu$ such that $T_{\mu \rightarrow \gamma} = \mathcal{C}_\gamma^{-1} \circ \mathcal{C}_\mu, \ T_{\gamma \rightarrow \nu} = \mathcal{C}_\nu^{-1} \circ \mathcal{C}_\gamma$ then $T_{\mu \rightarrow \nu} = T_{\gamma \rightarrow \nu} \circ T_{\mu \rightarrow \gamma}$ satisfies the push-foward condition and is well-defined almost everywhere; this is a unique example of the gluing lemma.
 \end{remark}
 
 The Monge 1D closed-form solution $T$ for continuous measures does not hold for discrete measures / when atoms exist and is generalized in the Kantorovich setting to couplings instead of maps.
@@ -519,6 +519,182 @@ Below is a simple numerical example for 2D anisotropic Gaussian distributions
 \end{proof}
 
 \subsection{Gaussian Measures and the Bures Metric}
+
+Gaussians are arguably the most important family of distributions; optimal transport gives us geometric properties of its parameters.
+
+\begin{proposition}[Transport of 1D Gaussians]
+    Let $\mu \sim N(m_\mu, \sigma_\mu^2)$ and $\nu \sim N(m_\nu, \sigma_\nu^2)$ be two non-degenerate Gaussian distributions on $\mathbb{R}$, then
+    \[
+    T(x) = \frac{\sigma_\nu}{\sigma_\mu}(x - m_\mu) + m_\nu
+    \]
+    is the optimal transport map and satisfies the push-forward constraint, and under Brenier's Theorem, $T = \nabla \psi$ where $\psi(x) = \frac{\sigma_\nu}{2\sigma_\mu} (x - m_\mu)^2 + m_\nu x$ and the Monge distance follows as 
+    \[
+    \mathcal{W}_2(\mu, \nu)^2 = \displaystyle \int_\mathbb{R} (\frac{\sigma_\nu}{\sigma_\mu}(x - m_\mu) + m_\nu - x)^2 d\mu(x) = (m_\mu - m_\nu)^2 + (\sigma_\mu - \sigma_\nu)^2.
+    \]
+    It cleanly follows that the squared Monge-2 distance is the Euclidean metric across $(\mu, \sigma) \in \mathbb{R} \times \mathbb{R}_{>0}$ space.
+\end{proposition}
+
+We will show that the Monge distance for MVN distributions is not Euclidean wrt mean vectors and covariance matrices.
+
+\begin{proposition}[Transport of Multivariate Gaussians]
+    Let $\mu \sim N(m_\mu, \Sigma_\mu)$, $\nu \sim N(m_\nu, \Sigma_\nu)$ and $T(x) = m_\nu + A(x - m_\mu)$, then $T = \nabla \psi$ where $\psi(x) = m_\nu^T x + \frac{(x-m_\mu)^T A(x - m_\mu)}{2}$ iff $A$ is symmetric PSD.
+\end{proposition}
+
+\begin{proposition}[Affine Push-Forward of Gaussians]
+    $T_\# \mu = \nu$ iff $A \Sigma_\mu A^T = \Sigma_\nu$.
+\end{proposition}
+
+\begin{proof}
+    $T(\mu) \sim N(m_\nu + A(m_\mu - m_\mu), A\Sigma_\mu A^T)$ equal to $\nu$ iff $A\Sigma_\mu A^T = \Sigma_\nu$.
+\end{proof}
+
+Under symmetry of Brenier's Theorem we have $A\Sigma_\mu A = \Sigma_\nu$. We promptly show that the covariance term in the Monge distance formula is given by the Bures metric.
+
+\begin{definition}[Bures Metric]
+    For PSD covariance matrices $\Sigma$, $\Lambda$ the Bures metric is defined by $\mathcal{B}(\Sigma, \Lambda)^2 = \text{tr}(\Sigma + \Lambda - 2(\Sigma^{\frac{1}{2}} \Lambda \Sigma^{\frac{1}{2}})^{\frac{1}{2}})$.
+\end{definition}
+
+\begin{proposition}[Bures Covariance of Gaussian $\mathcal{W}_2$]
+    Assume $\Sigma_\mu, \Sigma_\nu$ are PD, then the unique PD solution of $A\Sigma_\mu A = \Sigma_\nu$ is given by $A = \Sigma_\mu^{-\frac{1}{2}} (\Sigma_\mu^\frac{1}{2} \Sigma_\nu \Sigma_\mu^\frac{1}{2})^\frac{1}{2} \Sigma_\mu^{-\frac{1}{2}}$. Then 
+    \[
+    \mathcal{W}_2(\mu, \nu)^2 = \lvert m_\mu - m_\nu \rvert^2 + \mathcal{B}(\Sigma_\mu, \Sigma_\nu)^2.
+    \]
+\end{proposition}
+
+\begin{proof}
+    For the first claim multiply both sides by $\Sigma_\mu^\frac{1}{2}$ gives $(\Sigma_\mu^\frac{1}{2} A \Sigma_\mu^\frac{1}{2})^2 = \Sigma_\mu^\frac{1}{2}A\Sigma_\mu^\frac{1}{2}$ and $\Sigma_\mu^\frac{1}{2}A\Sigma_\mu^\frac{1}{2}$ is symmetric PD and the unique positive square root on RHS, and the identity of $A$ above is also unique therefore the expressions match.
+    \newline
+
+    For the second statement, notice that $T$ is optimal under Brenier; then
+    \[
+    \mathbb{E}\lvert X - T(X) \rvert^2 = \lvert m_\mu - m_\nu \rvert^2 + \mathbb{E} \lvert(I - A)(X - m_\mu) \rvert^2 = \lvert m_\mu - m_\nu \rvert^2 + \text{tr}((I - A)\Sigma_\mu(I - A)^T)
+    \]
+    \[
+    = \lvert m_\mu - m_\nu \rvert^2 + \text{tr}(\Sigma_\mu) + \text{tr}(A \Sigma_\mu A) - 2\text{tr}(A\Sigma_\mu) = \lvert m_\mu - m_\nu \rvert^2 + \text{tr}(\Sigma_\mu) + \text{tr}(\Sigma_\nu) - 2\text{tr}((\Sigma_\mu^\frac{1}{2} \Sigma_\nu \Sigma_\mu^\frac{1}{2})^\frac{1}{2})
+    \]
+    The remaining terms precisely defines the Bures metric.
+\end{proof}
+
+\begin{proposition}[Metric and Convexity of the Bures term]
+    The function $\mathcal{B}$ from Proposition 1.33 is a distance function for PSD covariance matrices. Futhermore, $\mathcal{B}^2$ is jointly convex such that for $t \in [0, 1]$,
+    \[
+    \mathcal{B}^2((1-t)\Sigma_0 + t\Sigma_1, (1-t)\Lambda_0 + t\Lambda_1) \leq (1-t)\mathcal{B}^2(\Sigma_0, \Lambda_0) + t\mathcal{B}^2(\Sigma_1, \Lambda_1).
+    \]
+\end{proposition}
+
+\begin{proof}
+    Use the Proscustes representation 
+    \[
+    \mathcal{B}^2(\Sigma, \Lambda) = \min_{Q^T Q = I} \lvert \Sigma^{\frac{1}{2}} - \Lambda^{\frac{1}{2}}Q \rvert_F^2 = \text{tr}(\Sigma) + \text{tr}(\Lambda) - 2\text{tr}((\Sigma^{\frac{1}{2}}\Lambda \Sigma^{\frac{1}{2}})^\frac{1}{2}).
+    \]
+    Symmetry, positivity and separation follow immediately.
+    \newline
+    
+    For the triangle inequality, choose almost optimal orthogonal matrices $Q_1, Q_2$ such that
+    \[
+    \lvert \Sigma^{\frac{1}{2}} - \Gamma^{\frac{1}{2}}Q_2Q_1 \rvert_F \leq \lvert \Sigma^{\frac{1}{2}} - \Lambda^{\frac{1}{2}}Q_1 \rvert_F + \lvert \Lambda^\frac{1}{2}Q_2 \rvert_F
+    \]
+    Setting the matrices to be optimal proves the metric property.
+
+    \newline
+    To prove convexity, use the equivalent factor formulation $\mathcal{B}^2(\Sigma, \Lambda) = \min_{UU^T = \Sigma, VV^T = \Lambda} \rvert U - V \rvert_F^2$ and once again choose almost optimal factors $(U_0, V_0)$ and $(U_1, V_1)$, then define block factors 
+    \[
+    U_t = [\sqrt{1-t}U_0, \sqrt{t}U_1], \ V_t = [\sqrt{1-t}V_0, \sqrt{t}V_1]
+    \]
+    Then $U_tU_t^T = (1-t)\Sigma_0 + t\Sigma_1$ and $V_tV_t^T = (1-t)\Lambda_0 + t\Lambda_1$ therefore
+    \[
+    \lvert U_t - V_t \rvert_F^2 = (1-t) \lvert U_0 - V_0 \rvert_F^2 + t \lvert U_1 - V_1 \rvert_F^2.
+    \]
+    Taking the infimum proves joint convexity.
+\end{proof}
+
+One can infer from Figure 1.5.2 that the mean of the Gaussian moves linearly and the covariance is interpolated wrt the Bures Wasserstein metric.
+
+\begin{example} Consider the distributions from Figure 1.5.2
+\[
+\mu \sim N(\begin{bmatrix}
+    -2 \\
+    -2
+\end{bmatrix}, \begin{bmatrix}
+1 & 0.8 \\
+0.8 & 1
+\end{bmatrix}), \ \nu \sim N(\begin{bmatrix}
+    4 \\
+    4
+\end{bmatrix}, \begin{bmatrix}
+1 & -0.8 \\
+-0.8 & 1
+\end{bmatrix})
+\]
+such that the optimal transport map $T$ is given by $T \bigg (\begin{bmatrix}
+    x_1 \\
+    x_2
+\end{bmatrix} \bigg ) = \begin{bmatrix}
+    -2 \\
+    -2
+\end{bmatrix} + A \bigg (\begin{bmatrix}
+    x_1 \\
+    x_2
+\end{bmatrix} - \begin{bmatrix}
+    4\\
+    4
+\end{bmatrix} \bigg )$
+where $A = \begin{bmatrix}
+    \frac{5}{3} & -\frac{4}{3}\\
+    -\frac{4}{3} & \frac{5}{3}
+\end{bmatrix}$
+according to Proposition 1.33 and satisfies Proposition 1.31.
+
+\bigskip
+
+The Bures metric between $\Sigma_\mu, \Sigma_\nu$ is given as
+\[
+\mathcal{B} \bigg (\begin{bmatrix}
+1 & 0.8 \\
+0.8 & 1
+\end{bmatrix}, \begin{bmatrix}
+1 & -0.8 \\
+-0.8 & 1
+\end{bmatrix} \bigg ) = \text{tr} \bigg( \begin{bmatrix}
+1 & 0.8 \\
+0.8 & 1
+\end{bmatrix} + \begin{bmatrix}
+1 & -0.8 \\
+-0.8 & 1
+\end{bmatrix} + \bigg( \frac{1}{5} \begin{bmatrix}
+2 & 1 \\
+1 & 2
+\end{bmatrix} \begin{bmatrix}
+1 & -0.8 \\
+-0.8 & 1
+\end{bmatrix} \begin{bmatrix}
+2 & 1 \\
+1 & 2
+\end{bmatrix} \bigg)^\frac{1}{2} \bigg)
+\]
+
+\[
+= 4 - 2 \text{tr} \bigg( \bigg( \frac{1}{5} \begin{bmatrix}
+1.8 & 0 \\
+0 & 1.8
+\end{bmatrix} \bigg)^\frac{1}{2} \bigg) = 4 - 2\text{tr} \bigg( \begin{bmatrix}
+0.6 & 0 \\
+0 & 0.6
+\end{bmatrix} \bigg) = 4 - 2.4 = 1.6
+\]
+so $\mathcal{B}^2 (\Sigma_\mu, \Sigma_\nu) = 1.6$. It immediately follows that the Monge distance is given by 
+\[
+\mathcal{W}_2(\mu, \nu)^2 = \lvert \begin{bmatrix}
+-2 \\
+-2
+\end{bmatrix} - \begin{bmatrix}
+4 \\
+4
+\end{bmatrix} \rvert^2 + 1.6 = 73.6
+\]
+which is minimized via $T$ and completes our sanity check. \hfill \(\square\)
+
+\end{example}
 
 \newpage
 \section{Kantorovich Formulation}

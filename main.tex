@@ -324,7 +324,7 @@ It easily follows that $\psi$ is unique $\mu$-almost everywhere up to an additiv
     \[
     \tilde{\mathcal{W}}_2(\mu, \nu)^2 = \displaystyle \int (x + 1)^2\frac{1}{\sqrt{2\pi}}\exp\{{-\frac{x^2}{2}\}} = 2
     \]
-    And $\psi(x) = x^2 +x$ is convex such that $T = \nabla \psi \hfill \(\square\)$.
+    And $\psi(x) = x^2 +x + C$ is convex such that $T = \nabla \psi. \hfill \(\square\)$.
 
 \end{example}
 
@@ -608,9 +608,9 @@ Under symmetry of Brenier's Theorem we have $A\Sigma_\mu A = \Sigma_\nu$. We pro
     Taking the infimum proves joint convexity.
 \end{proof}
 
-One can infer from Figure 1.5.2 that the mean of the Gaussian moves linearly and the covariance is interpolated wrt the Bures Wasserstein metric.
+One can infer from Figures 1.5.1/2 that the mean of the Gaussian moves linearly and the covariance is interpolated wrt the Bures Wasserstein metric.
 
-\begin{example} Consider the distributions from Figure 1.5.2
+\begin{example} Consider the distributions from Figures 1.5.1/2
 \[
 \mu \sim N(\begin{bmatrix}
     -2 \\
@@ -698,6 +698,127 @@ which is minimized via $T$ and completes our sanity check. \hfill \(\square\)
 
 \newpage
 \section{Kantorovich Formulation}
+150 years after the Monge problem, Kantorovich found a way to relax optimal transport maps into couplings and allow for distributional mass splitting.
+
+\subsection{Relaxation of Probability Measures}
+
+Recall the lack of mass splitting in the Monge formulation implies there may be no transport map $T$ that exists between measures. Furthermore, Monge maps may be asymmetric; a transport plan may exist from a atomless distribution to an atomic one but not vice versa. We will show that there always exists a Kantorovich solution but also improved tractability for numerical algorithms. 
+
+\begin{definition}[Marginals of joint measure]
+    Let $\pi \in \mathcal{M}_1^+(X \times Y)$ and $P_X, P_Y$ be the respective coordinate projection maps, then the marginals of $\pi$ are
+    \[
+    \pi_1 = (P_X)_\# \pi \in \mathcal{M}_1^+(X), \ \pi_2 = (P_Y)_\# \pi \in \mathcal{M}_1^+(Y).
+    \]
+    Equivalently for all test functions $f$ on $X$ and $g$ on $Y$ we have
+    \[
+    \displaystyle \int_{X \times Y} f(x)d\pi(x, y) = \int_X f d\pi_1, \ \int_{X \times Y}g(y)d\pi(x, y) = \int_Y g d\pi_2.
+    \]
+\end{definition}
+
+
+{\setlength{\parindent}{0cm}
+The marginal constraints of the coupling are given by $(P_X)_\#\pi = \mu, \ (P_Y)_\#\pi = \nu$ or $\pi(A \times Y) = \mu(A), \ \pi(X \times B) = \nu(B)$ for measurable sets.
+
+\begin{definition}[Couplings]
+    Given probability measures $\mu \in \mathcal{M}_1^+(X), \ \nu \in \mathcal{M}_1^+(Y)$, the set of couplings between $\mu$ and $\nu$ is denoted as
+    \[
+    \Gamma(\mu, \nu) = \{\pi \in \mathcal{M}_1^+(X \times Y):  \pi_1 = \mu, \ \pi_2 = \nu\}.
+    \]
+\end{definition}
+
+Unlike the Monge push-forward constraint, the feasible set is never empty, given by the tensor product / product coupling.
+
+\begin{definition}[Tensor Product / Trivial Coupling]
+    Given $\mu \in \mathcal{M}_1^+(X), \ \nu \in \mathcal{M}_1^+(Y)$, the tensor coupling $\mu \otimes \nu$ is the probability measure on $X \times Y$ defined by
+    \[
+    \displaystyle \int_{X \times Y} h(x, y)d(\mu \otimes \nu)(x, y) = \int_X \bigg (\int_Y h(x, y)d\nu(y)\bigg)d\mu(x)
+    \]
+    for all bounded measurable $h$.
+\end{definition}
+
+Even though the feasibility set is non-empty, the tensor coupling is almost never optimal in practice.
+
+\newpage
+
+\begin{proposition}[Degeneracy of Tensor Coupling]
+    Assume $X, Y$ are compact metric spaces and $c \in \mathcal{C}(X \times Y)$; the following statements are equivalent;
+    \begin{enumerate}
+        \item $\mu \otimes \nu = \text{argmin}_{\pi \in \Gamma(\mu, \nu)} \displaystyle \int c \ d\pi,$
+        \item Every feasible coupling is optimal,
+        \item $c(x, y) = u(x) + v(y)$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    We show that for $x_0, x_1 \in \text{supp}(\mu)$ and $y_0, y_1 \in \text{supp}(\nu)$ then \[
+    c(x_0, y_0) + c(x_1, y_1) = c(x_1, y_0) + c(x_0, y_1).
+    \]
+    Suppose by contradiction equality fails such that (rearranging $y_0, y_1$ if necessary)
+    \[
+    c(x_0, y_0) + c(x_1, y_1) > c(x_1, y_0) + c(x_0, y_1)
+    \]
+    and by continuity this holds true for small neighborhoods $U_0, U_1$ for $x_0, x_1$ and $V_0, V_1$ for $y_0, y_1$ respectively. Then these neighborhoods have positive marginal mass as the four points lie in the support of the respective measures. Denote $\mu_i, \nu_i$ the respective measures with domains restricted to $U_i, V_i$, and choose $\lambda$ such that $0 \leq \lambda \leq \min\{\mu(U_0)\nu(V_0), \mu(U_1)\nu(V_1)\}$. Then the exchanged measure 
+    \[
+    \tilde{\pi} = \mu \otimes \nu - \lambda (\mu_0 \otimes \nu_0) - \lambda (\mu_1 \otimes \nu_1) + \lambda(\mu_0 \otimes \nu_1) + \lambda(\mu_1 \otimes \nu_0)
+    \]
+    is non-negative and has the same marginals as $\mu \otimes \nu$. Then the strict equality on the neighborhoods imply that $\displaystyle \int c \ d\tilde{\pi} < \int c\ d(\mu \otimes \nu)$ arriving at a contradiction. Therefore $(1) \rightarrow (2)$ and the reverse implication follows trivially.
+    \bigskip
+    
+    Then fixing $x^* \in \text{supp}(\mu), y^* \in \text{supp}(\nu)$ and using the equality above we get $c(x, y) = c(x, y^*) + c(x^*, y) - c(x^*, y^*)$ thus $c = u + v$ on the product support. Every coupling is concentrated on said support and $\displaystyle \int c \ d\pi = \int u \ d\mu + \int v \ d\nu$ only depends on the marginals, hence all couplings are optimal.
+
+    
+\end{proof}
+
+We can now define a rigorous formulation of the Kantorovich Problem;
+\begin{definition}[Kantorovich Problem]
+        Given $\mu \in \mathcal{M}_1^+(X), \ \nu \in \mathcal{M}_1^+(Y)$ and cost function $c: X \times Y \rightarrow \mathbb{R}$, Kantorovich's problem is formulated as
+        \[
+        \mathcal{L}_c(\mu, \nu) = \inf_{\pi \in \Gamma(\mu, \nu)} \displaystyle \int_{X \times Y}c(x, y)d\pi(x, y).
+        \]
+        An equivalent formulation can be defined as
+        \[
+        \mathcal{L}_c(\mu, \nu) = \inf_{U \sim \mu, V \sim \nu}\mathbb{E}(c(U, V))
+        \]
+        where $U, V$ are random variables.
+    \end{definition}
+
+Unlike Monge's problem, Kantorovich achieves an optimum under fairly weak regularity conditions.
+
+\begin{proposition}[Existence of Kantorovich Solution(s) under Compact Spaces]
+    Assume $X, Y$ are compact metric spaces and $c \in \mathcal{C}(X \times Y)$, then the Kantorovich problem admits a minimizer.
+\end{proposition}
+
+\begin{proof}
+    Non-emptiness of constraint set has been proven; $X \times Y$ is compact hence Polish, then by Prokhorov's Theorem the set of all probability measures on $X \times Y$ is tight thus compact (Any probability measure on a Polish space is tight). To show that the constraint set is closed via weak convergence, let $\{\pi_n\} \subset \Gamma(\mu, \nu)$ such that $\pi_n \rightarrow \pi$ weakly, pick $f \in \mathcal{C}(X)$ and take the marginal projection $p_X: X \times Y \rightarrow X$, compose to get $f \circ p_X \in \mathcal{C}(X \times Y)$ such that with the push-forward definition, $(p_X)_\#\pi_n = \mu$ so
+    \[
+    \displaystyle \int_X f d\mu = \int_X f d[(p_X)_\#\pi_n] = \int_{X \times Y} (f\circ p_X) d\pi_n \rightarrow \int_{X \times Y} (f \circ p_X) d\pi = \int_X f d[(p_X)_\#\pi] = \int_X f d\mu
+    \]
+    Hence $(p_X)_\#\pi = \mu$ and repeat the argument to get $(p_Y)_\#\pi = \nu$ therefore the product is closed, hence the constraint set is closed and compact.
+
+    Finally, the $c$ is bounded (Since $c$ is continuous on a compact set), the functional $J(\pi_n) =  \displaystyle \int c \ d\pi_n \rightarrow \int c \ d\pi = J(\pi)$ is weakly continuous, thus the infimum is attained on the compact constraint set, completing the proof.
+\end{proof}
+
+We take a detour back to Monge's formulation and realize that the induced Kantorovich plan admits the same minimizer under Brenier's theorem.
+
+\begin{corollary}[Induced Kantorovich via Monge]
+    Let $\mu$ be absolutely continuous wrt Lebesgue and $c(x, y) = \lvert x - y \rvert^2$, if $T$ is the Brenier map solving Monge, then $\pi = (\text{Id}, T)_\#\mu$ solves the Kantorovich problem.
+\end{corollary}
+
+Kantorovich's formulation mathematically allows for mass splitting as Definition 2.3 yields non-triviality of the constraint set, and Proposition 2.6 relaxes the problem to arbitrary measures (Assuming compact restricted domains), which bypasses the huge bottleneck in Monge-style problems. 
+
+\begin{example}
+    Recall that for the counterexample with $\mu \sim \delta_0$ (WLOG $X = \{0\}$) and $\nu \sim N(0, 1)$ yields no Monge solution; under Kantorovich's formulation the optimal coupling becomes $\pi = \delta_1 \otimes N(0, 1)$ with optimal loss
+    \[
+    \mathcal{L}_c(\mu, \nu) = \inf_{\pi \in \Gamma(\mu, \nu)} \displaystyle \int_{X \times \mathbb{R}} \lvert x - y \rvert^2 d\pi(x, y) = \int_{X \times \mathbb{R}} \lvert x - y \rvert^2 \delta_0(dx)\nu(dy) = \int_\mathbb{R} \lvert 0 - y \rvert^2 \phi(y)dy = \mathbb{E}(Y^2) = 1.
+    \]
+
+    Where $\phi$ is the pdf of the standard normal distribution. Furthermore, the optimal coupling is unique (This does not hold true in general). \hfill \(\square\)
+
+\end{example}
+
+\newpage
+
+\subsection{Discrete Relaxation}
 
 \newpage
 \section{Dual Problems}

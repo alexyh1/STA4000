@@ -819,6 +819,86 @@ Kantorovich's formulation mathematically allows for mass splitting as Definition
 \newpage
 
 \subsection{Discrete Relaxation}
+Kantorovich's formulation yields a solution for discrete measures when $n \neq m$ and the transport coupling becomes a matrix $P \in \mathbb{R}^{n \times m}_+$ such that $P_{ij}$ describes the amount of mass moved from $x_i$ to $y_j$ where $\mu = \sum_{i = 1}^n a_i \delta_{x_i}$ and $\nu = \sum_{j = 1}^m b_j \delta_{y_j}$.
+
+\begin{definition}[Couplings]
+    The set of admissible couplings between discrete measures $\mu \in \mathcal{M}_1^+(X)$ and $\nu \in \mathcal{M}_1^+(Y)$ given above is defined by
+    \[
+    U(a, b) = \{P \in \mathbb{R}^{n \times m}_+; P \mathds{1}_m = a, P^T \mathds{1}_n = b \}.
+    \]
+\end{definition}
+
+Analogous to the continuous case, the constraint set is always non-empty (Due to the trivial coupling) and the optimality of the product coupling is degenerate.
+
+\begin{definition}[Discrete Product Coupling]
+    Given weights $a \in \Sigma_n$ and $b \in \Sigma_m$, the trivial coupling is given by $(a \otimes b)_{i, j} = a_i b_j$.
+\end{definition}
+
+\begin{corollary}[Product Coupling Optimality is Degenerate]
+    Remove all zero rows and columns such that $a_j, b_j > 0$ and $C_{ij} = c(x_i, y_j)$ is a finite cost matrix. Then $(a \otimes b)$ minimizes $P \rightarrow \langle C, P \rangle = \sum_{i = 1}^n \sum_{j = 1}^m P_{ij}C_{ij}$ subject to $P \in U(a, b)$ iff every coupling in $U(a, b)$ minimizes it.
+\end{corollary}
+
+Kantorovich invented the first form of linear programming such that the transport cost is linear in the amount of transported mass, with the discrete formulation below;
+
+\begin{definition}[Discrete Kantorovich Problem]
+    For $a \in \Sigma_n, b \in \Sigma_m \ (\mu = a^T\delta_x,  \nu = b^T \delta_y \ \text{via abuse of notation})$ and $C \in \mathbb{R}^{n \times m}$, define
+    \[
+    L_C(a, b) = \min_{P \in U(a, b)} \langle C, P \rangle = \min_{P \in U(a, b)} \sum_{i, j} C_{i,j} P_{i,j}.
+    \]
+    Then the optimal transport plan / coupling $P$ is given in the form of a probabilistic matrix.
+\end{definition}
+
+\begin{proposition}[Existence of Discrete Kantorovich Solution]
+    A solution to Definition 2.11 always exists (Not always unique).
+\end{proposition}
+
+\begin{proof}
+    Notice that the constraint set $U(a, b)$ is compact by Heine-Borel (Since $P \in U(a, b)$ is bounded by $0 \leq P_{ij} \leq 1$ and for any sequence $P_k$ the entries converge pointwise so $U(a, b)$ is sequentially closed), since the program is linear in $P$ then the minimum exists by EVT.
+\end{proof}
+
+\begin{proposition}[Convexity / Concavity properties]
+    For fixed cost function $C$, the Kantorovich problem $L_C$ is convex wrt simplexes. For fixed simplexes $a, b$, $L_C$ is concave wrt cost matrix $C$.
+\end{proposition}
+
+\begin{proof}
+    For $t \in [0, 1]$ and $(a_0, b_0), (a_1, b_1) \in \Sigma_n \times \Sigma_m$ with optimal matrices $P_0, P_1$ we have $tP_0 + (1-t)P_1 \in U(t(a_0, b_0) + (1-t)(a_1, b_1))$ so
+    \[
+    L_C(t(a_0, b_0) + (1-t)(a_1, b_1)) \leq \langle C, tP_0 + (1-t)P_1 \rangle = tL_C(a_0, b_0) + (1-t)L_C(a_1, b_1)
+    \]
+    Where the last equality follows from linearity of $L_C$.
+
+    For fixed marginals $a, b$, every $P \in U(a, b)$ satisfies
+    \[
+    \langle tC_0 + (1-t)C_1, P \rangle \geq tL_{C_0}(a, b) + (1-t)L_{C_1}(a, b)
+    \]
+    Concavity follows from taking the LHS minimum.
+\end{proof}
+
+In fact, the optimal transport matrix for Kantorovich's formulation is sparse for sufficiently large dimensions $n, m$; 
+
+\begin{proposition}[Rank-controlled Sparse Minimizers]
+    Let $\mathcal{A}: \mathbb{R}^{n \times m } \rightarrow \mathbb{R}^q$ be linear, $\textbf{d} \in \mathbb{R}^q$ and $C \in \mathbb{R}^{n \times m}$, then when $\inf_{P \geq 0, \mathcal{A}(P) \leq \textbf{d}} \langle C, P \rangle$ yields a solution $P^*$, then $P^*$ has at most $\text{rank}(\mathcal{A}) = \dim(\text{Im}(\mathcal{A}))$ non-zero entries.
+\end{proposition}
+
+\begin{proof}
+    See \cite{peyre} Proposition 3.7.
+\end{proof}
+
+\begin{proposition}
+    Assume $a_i, b_j > 0$ and $\Sigma_i a_i = \Sigma_j b_j = 1$, then the linear program admits an optimal matrix with at most $n + m - 1$ non-zero entries.
+\end{proposition}
+
+\begin{proof}
+    The feasible set is non-empty and compact (Recall Proposition 2.6) so the minimum exists and is finite. Then for $\mathcal{A}(P) = (P \mathds{1}_m, P^T \mathds{1}_n) \in \mathbb{R}^{n + m}, \ \text{rank}(\mathcal{A}) = n + m - 1$. and Proposition 2.14 completes the proof.
+\end{proof}
+
+In practice, libraries such as Python Optimal Transport (POT) uses methods such as the Network Simplex Algorithm for Exact Optimal Transport in $O(N^3)$ time; regularization methods or alternative algorithms will be introduced later for faster computation of transport solutions.
+
+\newpage
+\subsection{$c$-Cyclical Monotonicity}
+
+\newpage
+\section{Wasserstein Space}
 
 \newpage
 \section{Dual Problems}
@@ -828,6 +908,9 @@ Kantorovich's formulation mathematically allows for mass splitting as Definition
 
 \newpage
 \section{Convergence of Regularization Problems}
+
+\newpage
+\section{Statistical Optimal Transport}
 
 \newpage
 \section{Generalized Wasserstein Distances}

@@ -894,6 +894,81 @@ In fact, the optimal transport matrix for Kantorovich's formulation is sparse fo
 
 In practice, libraries such as Python Optimal Transport (POT) uses methods such as the Network Simplex Algorithm for Exact Optimal Transport in $O(N^3)$ time; regularization methods or alternative algorithms will be introduced later for faster computation of transport solutions.
 
+\bigskip
+
+The simple example below demonstrates mass-splitting of the discrete Kantorovich transport plan previously impossible with Monge:
+
+\begin{example}
+    Let $\mu = \frac{1}{2}\delta_{-1} + \frac{1}{2}\delta_1 = a^T \delta_x, \ \nu = \frac{1}{6}\delta_{-1} + \frac{1}{3}\delta_0 + \frac{1}{2}\delta_1 = b^T\delta_y$ where $a = (\frac{1}{2} \ \frac{1}{2})^T$ and $b = (\frac{1}{6} \ \frac{1}{3} \ \frac{1}{2})^T$, and $C \in \mathbb{R}^{2 \times 3}$ such that $C_{ij} = \lvert x_i - y_j\rvert^2$. Then
+    \[
+    L_C(a, b) = \min_{P \in U(a, b)} \sum_{ij}C_{ij}P_{ij} = \min_{P \in \mathbb{R}^{2 \times 3}_+: P \mathds{1}_3 = a, P^T \mathds{1}_2 = b} \sum_{ij} C_{ij} P_{ij}
+    \]
+    and the transport matrix $P^* = \begin{bmatrix}
+        \frac{1}{6} & \frac{1}{3} & 0\\
+        0 & 0 & \frac{1}{2}
+    \end{bmatrix}$ minimizes the discrete Kantorovich loss. \hfill \(\square\)
+\end{example}
+
+We will now restrict our attention to the special case $n = m$ and uniform weights $a = \frac{1}{n} 1_n, \ b = \frac{1}{m} 1_m$ which optimal transport plans are permutations in the Monge case and remain so under Kantorovich couplings; in fact, the extreme points of the linear programming problem are indeed the Monge permutations; the following results are necessary to show regularity under linear programs instead of continuous probability distributions.
+
+\begin{definition}[Permutation Matrices]
+    For a permutation $\sigma \in \text{Perm}(n)$, the permutation matrix $P_\sigma$ is given by $(P_\sigma)_{ij} = 1$ if $j = \sigma(i)$ and 0 otherwise. The set of all permutation matrices is $\mathcal{P}^\text{perm}_n = \{P_\sigma: \sigma \in \text{Perm}(n)\}$ which is non-convex.
+\end{definition}
+
+$\mathcal{P}^\text{Perm}_n$ can be made convex by relaxing the set to the finite set of all bistochastic matrices.
+
+\newpage
+\begin{definition}[Birkhoff Polytope]
+    The Birkhoff polytope is the convex set of all bistochastic matrices \[
+    \mathcal{B}_n = \{P \in \mathbb{R}^{n \times n}_+: P \mathds{1}_n = \mathds{1}_n, P^T \mathds{1}_n = \mathds{1}_n  \}.
+    \]
+\end{definition}
+
+\begin{definition}[Extreme Points]
+    For a convex set $\mathcal{C}$ in a finite dimensional vector space, 
+    \[
+    \text{Extr}(\mathcal{C}) = \{x \in \mathcal{C}: x = \frac{(y + z)}{2}, y, z \in \mathcal{C} \Rightarrow x = y = z\}.
+    \]
+\end{definition}
+
+\begin{proposition}[Existence of Extreme Points]
+    If $\mathcal{C} \neq \emptyset$ is a compact convex subset of finite dimensional vector space then Extr$(\mathcal{C}) \neq \emptyset$.
+\end{proposition}
+
+\begin{proof}
+    Use the stronger result that by Krein-Milman Theorem, any non-empty convex compact $X \subset \mathbb{R}^d \ (d < \infty)$ satisfies that $X$ is equal to the closure of the convex hull of its extreme points; therefore if $\text{Extr(X)} = \emptyset$ then $X = \emptyset$ yields a contradiction.
+\end{proof}
+
+\begin{theorem}[Birkhoff-von Neumann]
+    The extreme points of $\mathcal{B}_n$ are the permutation matrices.
+\end{theorem}
+
+\begin{proof}
+    Invoke Krein-Milman on Mirsky \cite{bvn} Theorem 2. 
+\end{proof}
+
+In fact, every transport matrix (which is bistochastic) can be decomposed into a linear combination of permutation matrices.
+
+\begin{corollary}[Birkhoff-von Neumann Decomposition]
+    Every $P \in \mathcal{B}_n$ admits a representation
+    \[
+    P = \sum_{i = r}^L \lambda_r P_{\sigma(r)}, \ \lambda_r > 0, \ \sum_{r = 1}^L \lambda_r = 1, \ L \leq (n - 1)^2 + 1.
+    \]
+\end{corollary}
+
+\begin{proof}
+    Let $\mathcal{K}$ be the convex hull of $\mathcal{P}_n^{\text{perm}}$ such that $\mathcal{K} \subset \mathcal{B}_n$. Suppose by contradiction $P \in \mathcal{B}_n \backslash \mathcal{K} \neq \emptyset$ such that strict separation provides a linear form $l$ such that $l(P) < \min_{Q \in \mathcal{K}} l(Q)$; 2.19 and 2.20 yields $\min_{Q \in \mathcal{B}_n} l(Q) = \min_{\sigma \in \text{Perm}(n)} l(P_\sigma) = \min_{Q \in \mathcal{K}} l(Q)$ contradicts $P \in \mathcal{B}_n$ therefore $\mathcal{K} = \mathcal{B}_n$.
+    \newline
+    \newline
+    Then the $n$ rows and $n$ column equations combined have rank $2n - 1$ and $\mathds{1}_n \mathds{1}_n^T / n$ lies in the affine space, so $\mathcal{B}_n$ has dimension $n^2 - (2n - 1) = (n - 1)^2$, then Caratheodory's theorem in the affine hull reduces the convex decomposition to $(n - 1)^2 + 1$ permutation matrices at most, notwithstanding those with zero coefficients. 
+\end{proof}
+
+\begin{remark}
+    Two immediate results follow from the decomposition: Firstly, the decomposition need not be unique. Secondly, BvN shows that there does not exist a mass-splitting transport matrix that performs better than permutation matrices in the uniform weights $m = n$ case.
+\end{remark}
+
+The BvN decomposition for transport plans have a worst case time complexity of $O(n^5)$ and a memory cost of $O(n^2)$, which can be accelerated by faster bipartite-matching algorithms and/or the residual supports are sparse. 
+
 \newpage
 \subsection{$c$-Cyclical Monotonicity}
 
@@ -950,6 +1025,10 @@ G. Carlier, A. Galichon, and F. Santambrogio.
 \textit{From Knothe’s transport
 to Brenier’s map and a continuation method for optimal transport}.
 SIAM J. Math, 2009.
+
+\bibitem{bvn}
+Mirsky, L. 
+\textit{Proofs of Two Theorems on Doubly-Stochastic Matrices}. Proceedings of the American Mathematical Society, 1958.
 
 
 \end{thebibliography}

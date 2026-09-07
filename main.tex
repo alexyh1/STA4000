@@ -18,6 +18,8 @@
 \usepackage{dsfont}
 \usepackage{caption}
 \usepackage{float}
+\usepackage{url}
+\usepackage{doi}
 
 % --------------------
 % Theorem Environments
@@ -972,6 +974,31 @@ The BvN decomposition for transport plans have a worst case time complexity of $
 \newpage
 \subsection{$c$-Cyclical Monotonicity}
 
+A necessary condition for discrete Kantorovich optimal transport couplings is that the support must be $c$-cyclically monotone (wrt cost function $c$) as outlined in the definition below.
+
+\begin{definition}[$c$-Cyclical Monotonicity]
+    A set $\Gamma \subset X \times Y$ is $c$-cyclically monotone if $\forall k \geq 2$, every finite family $(x_i, y_i)_{i = 1}^k \subset \Gamma$ and every permutation $\sigma$ of $\{1, ..., k\}$ satisfies 
+    \[
+    \sum_{i = 1}^k c(x_i, y_i) \leq \sum_{i = 1}^k c(x_i, y_{\sigma(i)}).
+    \]
+    Equivalently, $\sum_{i = 1}^k c(x_i, y_i) \leq \sum_{i = 1}^k c(x_i, y_{i + 1})$.
+\end{definition}
+
+\begin{theorem}[$c$-Cyclical Monotonicity of Optimal Plans]
+    Assume that $c: X \times Y \rightarrow [0, \infty]$ is cts and the Kantorovich value is finite, then any $\pi$ solving Definition 2.5 has a $c$-cyclically monotone support.
+\end{theorem}
+
+\begin{proof}
+    See Gangbo and McCann \cite{gangbo} Theorem 2.3. 
+\end{proof}
+
+\begin{remark}
+    If the Kantorovich plan is induced from a Monge map $T$ such that $\pi = (\text{Id}, T)_\# \mu$ then there exists a set $G \subset X$ of full $\mu$-measure such that $(x, T(x)) \in \text{supp}(\pi)$ for all $x \in G$. Then cyclial monotonicity yields for $x_1, ..., x_k \in G$
+    \[
+    \sum_{i = 1}^k c(x_i, T(x_i)) \leq \sum_{i = 1}^k c(x_i, T(x_{i + 1})), \ x_{k + 1} = x_1.
+    \]
+\end{remark}
+
 \newpage
 \section{Wasserstein Space}
 
@@ -999,6 +1026,7 @@ The BvN decomposition for transport plans have a worst case time complexity of $
 \newpage
 \section{Wasserstein Gradient Flows}
 
+\end{spacing}
 \newpage
 
 \bibliographystyle{amsplain}
@@ -1030,12 +1058,40 @@ SIAM J. Math, 2009.
 Mirsky, L. 
 \textit{Proofs of Two Theorems on Doubly-Stochastic Matrices}. Proceedings of the American Mathematical Society, 1958.
 
+\bibitem{gangbo}
+W. Gangbo. R.  McCann. T\textit{he geometry of optimal transportation.} Acta Math. 177 (2) 113 - 161, 1996.
+
+\bibitem{flamary2026pot}
+Rémi Flamary, Cédric Vincent-Cuaz, Nicolas Courty, Alexandre Gramfort,
+Oleksii Kachaiev, Huy Quang Tran, Laurène David, Clément Bonet,
+Nathan Cassereau, Théo Gnassounou, Eloi Tanguy, Julie Delon,
+Antoine Collas, Sonia Mazelet, Laetitia Chapel, Tanguy Kerdoncuff,
+Xizheng Yu, Matthew Feickert, Paul Krzakala, Tianlin Liu,
+Eduardo Fernandes Montesuma, Nathan Neike, Baptiste Genest,
+David Coeurjolly, Thibaut Germain, Sienna O'Shea, Marco Corneli,
+and Ferdinand Genans.
+\newblock \emph{POT: Python Optimal Transport}.
+\newblock Version 0.9.7, July 2026.
+\newblock \url{https://github.com/PythonOT/POT}.
+\newblock \doi{10.5281/zenodo.17161062}.
+
+\bibitem{flamary2021pot}
+Rémi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar Z. Alaya,
+Aurélie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos,
+Kilian Fatras, Nemo Fournier, Léo Gautheron, Nathalie T. H. Gayraud,
+Hicham Janati, Alain Rakotomamonjy, Ievgen Redko, Antoine Rolet,
+Antony Schutz, Vivien Seguy, Danica J. Sutherland, Romain Tavenard,
+Alexander Tong, and Titouan Vayer.
+\newblock POT: Python Optimal Transport.
+\newblock \emph{Journal of Machine Learning Research},
+  22(78):1--8, 2021.
+\newblock \url{http://jmlr.org/papers/v22/20-451.html}.
 
 \end{thebibliography}
 % ============================================================
-\end{spacing}
 
 % BIBLIOGRAPHY
+
 
 
 \end{document}

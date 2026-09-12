@@ -322,11 +322,11 @@ In many cases Monge's distance is not well-defined, as well as $\tilde{\mathcal{
 It easily follows that $\psi$ is unique $\mu$-almost everywhere up to an additive constant. 
 
 \begin{example}
-    Let $\mu \sim N(0, 1)$ and $\nu \sim \text{Unif}[0, 1]$, then $T(x) = 2x + 1$ and $T_\# \mu = \nu$ with Monge distance
+    Let $\mu \sim N(0, 1)$ and $\nu \sim \text{Unif}[0, 1]$, then $T(x) = \Phi(x)$ and $T_\# \mu = \nu$ with Monge distance
     \[
-    \tilde{\mathcal{W}}_2(\mu, \nu)^2 = \displaystyle \int (x + 1)^2\frac{1}{\sqrt{2\pi}}\exp\{{-\frac{x^2}{2}\}} = 2
+    \tilde{\mathcal{W}}_2(\mu, \nu)^2 = \displaystyle \int \lvert x - \Phi(x) \rvert^2 \phi(x)dx = \mathbb{E}((X - \Phi(X))^2) = \frac{4}{3} - \frac{1}{\sqrt{\pi}}
     \]
-    And $\psi(x) = x^2 +x + C$ is convex such that $T = \nabla \psi. \hfill \(\square\)$.
+    And $\psi(x) = x\Phi(x) + \phi(x) + C$ is convex $(\nabla^2 \psi(x) = \phi(x) > 0)$ such that $T = \nabla \psi. \hfill \(\square\)$.
 
 \end{example}
 
@@ -1002,6 +1002,122 @@ A necessary condition for discrete Kantorovich optimal transport couplings is th
 \newpage
 \section{Wasserstein Space}
 
+\subsection{Wasserstein Distance}
+Kantorovich Optimal Transport generalizes the Monge case where a genuine distance is defined between distributions under reguarlity conditions of the cost function. The proof of the result first relies on a "gluing lemma".
+
+\begin{lemma}[Gluing Lemma]
+    Let $(\mu, \nu, \gamma) \in \mathcal{M}_1^+(X) \times \mathcal{M}_1^+(Y) \times \mathcal{M}_1^+(Z)$ where $X, Y, Z$ are Polish spaces, given $\pi \in \Gamma(\mu, \nu), \xi \in \Gamma(\nu, \gamma)$, then there exists a probability measure $\sigma \in \mathcal{M}_1^+(X \times Y \times Z)$ such that 
+    \[
+    {P_{X, Y}}_\# \sigma = \pi, {P_{Y, Z}}_\# \sigma = \xi.
+    \]
+\end{lemma}
+
+\begin{proof}
+    $\pi(dx, dy) = \pi_y(dx)\nu(dy), \xi(dy, dz) = \nu(dy)\xi_y(dz)$ via the Disintegration Theorem as all spaces are Polish. Then $\sigma$ is given by 
+    \[
+    \sigma(dx, dy, dz) = \pi_y(dx)\nu(dy)\xi_y(dz).
+    \]
+    which is indeed a measure. Then by Fubini-Tonelli's,
+    \[
+    \displaystyle \int g \ d\sigma = \int_Y \int_X \int_Z g(x, y, z) \xi_y(dz) \pi_y(dx) \nu(dy)
+    \]
+    So take $g(x, y, z) = h(x, y)$ and $g(x, y, z) = h(y, z)$ recovers $\pi$ and $\xi$ respectively.
+\end{proof}
+
+\begin{definition}[p-Wasserstein Space]
+    Let $(X, d)$ be Polish, $p \geq 1$, and fix $x_0 \in X$, then the $p$-Wasserstein space is
+    \[
+    \mathcal{P}_p(X) = \{\mu \in \mathcal{M}_1^+(X): \displaystyle \int d(x, x_0)^p d\mu(x) < \infty\}
+    \]
+    i.e. $\mathcal{P}_p(X)$ is the set of all probability measures on $X$ with finite $p$-th moment.
+\end{definition}
+
+Monge distance can be generalized into the Kantorovich case via Wasserstein distance, in fact we can show that unlike $\tilde{\mathcal{W}}$, $\mathcal{W}_p$ is indeed a metric;
+
+\begin{definition}[p-Wasserstein Distance]
+    Let $(X, d)$ be Polish, $p \geq 1$, then on the $p$-Wasserstein space from Definition 3.2, the $p$-Wasserstein distance is defined as
+    \[
+    \mathcal{W}_p(\mu, \nu) = \mathcal{L}_{d^p}(\mu, \nu)^p = \inf_{\pi \in \Gamma(\mu, \nu)} \bigg (\displaystyle \int_{X \times X} d(x, y)^p d\pi(x, y)\bigg )^\frac{1}{p}.
+    \]
+\end{definition}
+
+\begin{proposition}[Metric Property of $\mathcal{W}_p$]
+    $\mathcal{W}_p$ defines a metric on $\mathcal{P}_p(X)$.
+\end{proposition}
+
+\begin{proof}
+    Symmetry follows immediately (Compose the flip map with the transport plan and the cost is unchanged). Non-negativity follows from Proposition 2.6 such that if $\mathcal{W}(\mu, \nu) = 0$ then $d = 0$ a.e. wrt $\pi$ so $x = y$ a.e., and $\mu = \nu$ since for every Borel function $f$,
+    \[
+    \displaystyle \int f d\mu = \int f(x) d\pi(x, y) = \int f(y) d\pi(x, y) = \int f d\nu.
+    \]
+    
+    The proof for the triangle inequality invokes the gluing lemma; for probability measures $\mu, \nu, \gamma$ and their optimal couplines $\pi \in \Gamma(\mu, \nu)$ and $\xi \in \Gamma(\nu, \gamma)$, glue them to $\sigma$ from 3.1. Then let $P_{X, Z}(x, y, z) = (x, z)$ and define $\eta = {P_{X, Z}}_\# \sigma$ such that $\eta \in \Gamma(\mu, \gamma)$, using Minkowski's and triangle inequality of distance functions we get
+    \[
+    \mathcal{W}_p(\mu, \gamma) \leq \displaystyle \bigg (\int d(x, z)^p d\eta \bigg)^\frac{1}{p} = \bigg (\int d(x, z)^p d\sigma(x, y, z) \bigg)^\frac{1}{p}
+    \]
+    \[
+     \leq \bigg (\displaystyle \int d(x, y)^p d\sigma(x, y, z)\bigg )^\frac{1}{p} + \bigg (\displaystyle \int d(y, z)^p d\sigma(x, y, z) \bigg )^\frac{1}{p}
+    \]
+    \[
+     = \displaystyle \bigg (\int d(x, y)^p d\pi \bigg)^\frac{1}{p} + \displaystyle \bigg (\int d(y, z)^p d\xi \bigg)^\frac{1}{p} = \mathcal{W}_p(\mu, \nu) + \mathcal{W}_p(\nu, \gamma).
+    \]
+\end{proof}
+
+\begin{proposition}[Euclidean Mean-Bound and Quadratic Decomposition]
+    Let $p \geq 1$ and $\mu, \nu \in \mathcal{P}_p(\mathbb{R}^d)$, and $m_\mu = \displaystyle \int_{\mathbb{R^d}} x \ d\mu(x), \ m_\nu = \int_{\mathbb{R^d}} x \ d\nu(x)$. Then $\mathcal{W}_p(\mu, \nu) \geq \lvert m_\mu - m_\nu \rvert$. For $p = 2$ defined the translated measures $\mu_0 = (x \rightarrow x - m_\mu)_\# \mu$ and $\nu_0 = (x \rightarrow m_\nu)_\# \nu$, then the following decomposition holds;
+    \[
+    \mathcal{W}_2^2(\mu, \nu) = \lvert m_\mu - m_\nu \rvert^2 + \mathcal{W}_2^2(\mu_0, \nu_0).
+    \]
+\end{proposition}
+
+\begin{proof}
+    For all $\pi \in \Gamma(\mu, \nu), \ m_\mu - m_\nu = \displaystyle \int_{\mathbb{R}^d \times \mathbb{R}^d} (x - y) d\pi(x, y)$, then by Jensen's inequality
+    \[ \lvert m_\mu - m_\nu \rvert \leq \displaystyle \bigg (\int_{\mathbb{R}^d \times \mathbb{R}^d} \lvert (x - y) \rvert^p d\pi(x, y) \bigg )^\frac{1}{p};
+    \]
+    taking the infimum proves the first claim.
+
+    \bigskip
+    For $p = 2$, let $\pi_0= ((x, y) \rightarrow (x - m_\mu, y - m_\nu))_\# \pi$ such that the translation defines a bijection; a quick change of variables $a = x - m_\mu$ and $b = y - m_\nu$ and taking the infimum finishes the proof.
+\end{proof}
+
+Analogously, McCann's Displacement Interpolation for the Monge formulation can be expressed in the Kantorovich case: The optimal transport plan induces a $\mathcal{W}_2$ geodesic.
+
+\begin{definition}[$\mathcal{W}_2$ Kantorovich-induced geodesic]
+    Let $\mu_0, \mu_1 \in \mathcal{P}_2(\mathbb{R}^d)$ and $\pi^* \in \Gamma(\mu_0, \mu_1)$ be optimal for $\mathcal{W}_2^2(\mu_0, \mu_1)$. For $t \in [0, 1]$ define
+    \[
+    e_t(x, y) = (1-t)x + ty, \ \mu_t = (e_t)_\# \pi^*,
+    \]
+    Then the curve $(\mu_t)_{t \in [0, 1]}$ is the McCann displacement geodesic induced by $\pi^*$.
+\end{definition}
+
+\newpage
+\begin{proposition}[Kantorovich Interpolation is a Geodesic]
+    Let $(\mu_t)_{t \in [0, 1]}$ be defined as in Definition 3.6, then for all $0 \leq s \leq t \leq 1, \ \mathcal{W}_2(\mu_s, \mu_t) = (t - s)\mathcal{W}_2(\mu_0, \mu_1)$. Then $t \rightarrow \mu_t$ is a constant speed geodesic for the metric $\mathcal{W}_2$.
+\end{proposition}
+
+\begin{proof}
+    Push the optimal transport plan $\pi^*$ by $(e_s, e_t)$, this gives a coupling $\gamma_{s, t} \in \Gamma(\mu_s, \mu_t)$ such that
+    \[
+    \displaystyle \int \lvert z - z' \rvert^2 d\gamma_{s, t}(z, z') = \int \lvert e_t(x, y) - e_s(x, y) \rvert^2 d\pi^*(x, y) = (t - s)^2 \mathcal{W}_2^2(\mu_0, \mu_1)
+    \]
+    Hence $\mathcal{W}_2(\mu_s, \mu_t) \leq (t - s)\mathcal{W}_2(\mu_0, \mu_1)$. Then use the upper bound with $(0, s), (s, t), (t, 1)$ and Proposition 3.4 yields
+    \[
+    \mathcal{W}_2(\mu_0, \mu_1) \leq \mathcal{W}_2(\mu_0, \mu_s) + \mathcal{W}_2(\mu_s, \mu_t) + \mathcal{W}_2(\mu_t, \mu_1) \leq \mathcal{W}_2(\mu_0, \mu_1).
+    \]
+    The middle segment has the claimed length.
+\end{proof}
+
+The following proposition shows that Kantorovich relaxes the Monge formulation such that the distances are equal even when a Monge solution fails (Under regularity conditions).
+
+\begin{proposition}[Kantorovich as Space-Plan Relaxation of Monge]
+    Let $(X, d)$ be compact, $p \geq 1$ and $\mu, \nu \in \mathcal{P}(X)$ with $\mu$ atomless, then $\tilde{\mathcal{W}}_p(\mu, \nu) = \mathcal{W}_p(\mu, \nu)$.
+\end{proposition}
+
+\begin{proof}
+    See Santambrogio \cite{santambrogio} Theorem 1.33.
+\end{proof}
+
+
 \newpage
 \section{Dual Problems}
 
@@ -1061,7 +1177,7 @@ Mirsky, L.
 \bibitem{gangbo}
 W. Gangbo. R.  McCann. T\textit{he geometry of optimal transportation.} Acta Math. 177 (2) 113 - 161, 1996.
 
-\bibitem{flamary2026pot}
+\bibitem{pot26}
 Rémi Flamary, Cédric Vincent-Cuaz, Nicolas Courty, Alexandre Gramfort,
 Oleksii Kachaiev, Huy Quang Tran, Laurène David, Clément Bonet,
 Nathan Cassereau, Théo Gnassounou, Eloi Tanguy, Julie Delon,
@@ -1075,7 +1191,7 @@ and Ferdinand Genans.
 \newblock \url{https://github.com/PythonOT/POT}.
 \newblock \doi{10.5281/zenodo.17161062}.
 
-\bibitem{flamary2021pot}
+\bibitem{pot21}
 Rémi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar Z. Alaya,
 Aurélie Boisbunon, Stanislas Chambon, Laetitia Chapel, Adrien Corenflos,
 Kilian Fatras, Nemo Fournier, Léo Gautheron, Nathalie T. H. Gayraud,
@@ -1086,6 +1202,11 @@ Alexander Tong, and Titouan Vayer.
 \newblock \emph{Journal of Machine Learning Research},
   22(78):1--8, 2021.
 \newblock \url{http://jmlr.org/papers/v22/20-451.html}.
+
+\bibitem{santambrogio}
+F.~Santambrogio.
+\textit{Optimal Transport for Applied Mathematicians: Calculus of Variations, PDEs and Modeling}.
+Birkhäuser, 2015.
 
 \end{thebibliography}
 % ============================================================

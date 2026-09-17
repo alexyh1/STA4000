@@ -165,7 +165,7 @@ It follows trivially that total variation of probability measures are always equ
     \]
     Then the Lebesgue integrals can be easily computed via 1.6 as
     \[
-    \lvert \mu \rvert ([-1, 1]) =  \lvert \displaystyle \int_{-1}^{\frac{2}{3}} (3x-2)dx \rvert + \displaystyle \int_{\frac{2}{3}}^1 (3x-2)dx = \frac{25}{6}+\frac{1}{6} = \frac{13}{3}. \hfill \tag*{\(\square\)}
+    \lvert \mu \rvert ([-1, 1]) =  \bigg \lvert \displaystyle \int_{-1}^{\frac{2}{3}} (3x-2)dx \bigg \rvert + \displaystyle \int_{\frac{2}{3}}^1 (3x-2)dx = \frac{25}{6}+\frac{1}{6} = \frac{13}{3}. \hfill \tag*{\(\square\)}
     \]
 \end{example}
 
@@ -178,7 +178,7 @@ Notice that we can verify that the definitions of total variation are indeed equ
 \begin{proof}
     To show the forward inequality, it follows that
     \[
-    \lvert \displaystyle \int f d\mu \rvert \leq \displaystyle \int \lvert f \rvert \ d \lvert \mu \rvert \leq \lvert f \rvert_\infty \lvert \mu \rvert (X).
+    \bigg \lvert \displaystyle \int f d\mu \bigg \rvert \leq \displaystyle \int \lvert f \rvert \ d \lvert \mu \rvert \leq \lvert f \rvert_\infty \lvert \mu \rvert (X).
     \]
     For the reverse inequality, let $\mu = \mu^+ - \mu^-$ via Jordan decomposition such that $\lvert \mu \rvert = \mu^+ + \mu^-$, then $s = \frac{d\mu}{d\lvert \mu \rvert}$ = -1 or 1 excluding null sets, such that $d \mu = s \ d \lvert \mu \rvert$. By regularity of Radon measures on compact spaces we can find a sequence of continuous functions $f_k \in L^1 (\lvert \mu \rvert)$ (i.e. $\displaystyle \int \lvert f_k \rvert \ d\mu < \infty$) that approximates $s$ with $\lvert f_k \rvert_\infty \leq 1$, therefore
     \[
@@ -288,7 +288,7 @@ Notice that Monge's problem does not guarantee the existence of such a map; cons
     \]
     Then for bounded 1-Lipschitz functions $h$,
     \[
-    \lvert \displaystyle \int hd\nu - \displaystyle \int h d\mu \rvert = \lvert \displaystyle \int (h(T_k(x) - h(x))d\mu(x) \rvert \leq \int d_x(T_k(x)) d\mu(x) \leq (\int d_x(T_k(x))^p d\mu(x))^p \rightarrow 0.
+    \bigg \lvert \displaystyle \int hd\nu - \displaystyle \int h d\mu \rvert = \bigg \lvert \displaystyle \int (h(T_k(x) - h(x))d\mu(x) \bigg \rvert \leq \int d_x(T_k(x)) d\mu(x) \leq (\int d_x(T_k(x))^p d\mu(x))^p \rightarrow 0.
     \]
     Since 1-Lipschitz functions separate probability measures on metric spaces, it follows that $\mu = \nu$.
     \newline
@@ -316,7 +316,7 @@ In many cases Monge's distance is not well-defined, as well as $\tilde{\mathcal{
 \end{theorem}
 
 \begin{proof}
-    See Villani \cite{villani} Section 3.3.
+    See Villani \cite{villani} Theorem 2.12 which proves the stronger statement for the Kantorovich case; Monge follows immediately.
 \end{proof}
 
 It easily follows that $\psi$ is unique $\mu$-almost everywhere up to an additive constant. 
@@ -335,7 +335,7 @@ Let $\Omega \in \mathbb{R}^d$ be endowed with the normalized Lebesgue measure $\
 \end{theorem}
 
 \begin{proof}
-    See Santambrogio Theorem 1.53.
+    See Santambrogio \cite{santambrogio} Theorem 1.53.
 \end{proof}
 
 \begin{remark}
@@ -787,17 +787,17 @@ We can now define a rigorous formulation of the Kantorovich Problem;
 Unlike Monge's problem, Kantorovich achieves an optimum under fairly weak regularity conditions.
 
 \begin{proposition}[Existence of Kantorovich Solution(s) under Compact Spaces]
-    Assume $X, Y$ are compact metric spaces and $c \in \mathcal{C}(X \times Y)$, then the Kantorovich problem admits a minimizer.
+    Assume $X, Y$ are compact metric spaces and $c$ is lower semi-continuous, then the Kantorovich problem admits a minimizer.
 \end{proposition}
 
 \begin{proof}
-    Non-emptiness of constraint set has been proven; $X \times Y$ is compact hence Polish, then by Prokhorov's Theorem the set of all probability measures on $X \times Y$ is tight thus compact (Any probability measure on a Polish space is tight). To show that the constraint set is closed via weak convergence, let $\{\pi_n\} \subset \Gamma(\mu, \nu)$ such that $\pi_n \rightarrow \pi$ weakly, pick $f \in \mathcal{C}(X)$ and take the marginal projection $p_X: X \times Y \rightarrow X$, compose to get $f \circ p_X \in \mathcal{C}(X \times Y)$ such that with the push-forward definition, $(p_X)_\#\pi_n = \mu$ so
+    Non-emptiness of constraint set has been proven; $X \times Y$ is compact hence Polish and all Borel probabiliy measures on the product are tight, therefore by Prokhorov the constraint set is relatively compact wrt weak convergence. To show that the constraint set is closed via weak convergence, let $\{\pi_n\} \subset \Gamma(\mu, \nu)$ such that $\pi_n \rightarrow \pi$ weakly, pick $f \in \mathcal{C}(X)$ and take the marginal projection $p_X: X \times Y \rightarrow X$, compose to get $f \circ p_X \in \mathcal{C}(X \times Y)$ such that with the push-forward definition, $(p_X)_\#\pi_n = \mu$ so
     \[
     \displaystyle \int_X f d\mu = \int_X f d[(p_X)_\#\pi_n] = \int_{X \times Y} (f\circ p_X) d\pi_n \rightarrow \int_{X \times Y} (f \circ p_X) d\pi = \int_X f d[(p_X)_\#\pi] = \int_X f d\mu
     \]
     Hence $(p_X)_\#\pi = \mu$ and repeat the argument to get $(p_Y)_\#\pi = \nu$ therefore the product is closed, hence the constraint set is closed and compact.
 
-    Finally, the $c$ is bounded (Since $c$ is continuous on a compact set), the functional $J(\pi_n) =  \displaystyle \int c \ d\pi_n \rightarrow \int c \ d\pi = J(\pi)$ is weakly continuous, thus the infimum is attained on the compact constraint set, completing the proof.
+    Finally, the $c$ is bounded (Since $c$ is continuous on a compact set), the functional $J(\pi_n) =  \displaystyle \int c \ d\pi_n \rightarrow \int c \ d\pi = J(\pi)$ is weakly lower semi-continuous, thus the infimum is attained on the compact constraint set by Portmanteau, completing the proof.
 \end{proof}
 
 We take a detour back to Monge's formulation and realize that the induced Kantorovich plan admits the same minimizer under Brenier's theorem.
@@ -1117,6 +1117,111 @@ The following proposition shows that Kantorovich relaxes the Monge formulation s
     See Santambrogio \cite{santambrogio} Theorem 1.33.
 \end{proof}
 
+\subsection{Topology and Applications}
+We take a short detour to examine the topological properties related to the Wasserstein distance. 
+
+\begin{proposition}
+    Let $(X, d)$ be a bounded Polish space and $1 \leq p \leq q < \infty$, and $\mu, \nu \in \mathcal{P}_q(X)$, then
+    \[
+    \mathcal{W}_p(\mu, \nu) \leq \mathcal{W}_q(\mu, \nu) \leq \text{diam}(X)^\frac{q - p}{q} \mathcal{W}_p(\mu, \nu)^\frac{p}{q}.
+    \]
+\end{proposition}
+
+\begin{proof}
+    The first inequality follows from Jensen's, applied to any coupling $\pi$ and to the convex function $z \rightarrow (z)^\frac{q}{p}$, $\bigg ( \displaystyle \int d(x, y)^p d\pi(x, y)\bigg )^\frac{q}{p} \leq \int d(x, y)^q d\pi(x, y)$; taking the infimum completes the proof. The second inequality follows from $d(x, y)^q \leq \text{diam}(X)^{q - p} d(x, y)^p$ and take the infimum once again.
+\end{proof}
+
+For Proposition 3.9, all Wasserstein distances $\mathcal{W}_p$ for $p \geq 1$ induce the same topology, although not all distances are the same.
+
+\bigskip
+In fact in compact spaces, $\mathcal{W}_p(\mu_n, \mu) \rightarrow 0 \Leftrightarrow \mu_n \rightarrow \mu$ weakly. This is not necessarily true when the underlying space is not compact.
+
+\begin{definition}[Weak Convergence of Measures]
+    A sequence of probability measures $\mu_n \rightarrow \mu \in \mathcal{M}_1^+(X)$ converges weakly iff $\displaystyle \int_X f d\mu_n \rightarrow \int_X f d\mu$ for all bounded continuous functions $f: X \rightarrow \mathbb{R}$.
+\end{definition}
+
+On Polish spaces we have the incredibly clean result in the equivalent definitions of Wasserstein distances; in fact, Wasserstein convergence is equivalent to weak convergence in the moments.
+
+\begin{proposition}[Total Variation as Wasserstein for Discrete Metric]
+    Let $X$ be Borel, $\mu, \nu \in \mathcal{M}_1^+(X)$, and $d_0(x, y) = 0$ when $x = y$ and $1$ otherwise, then for $p \geq 1$,
+    \[
+    \inf_{\pi \in \Gamma(\mu, \nu)} \displaystyle \int d_0(x, y)^p d\pi(x,y) = \frac{1}{2} \lvert \mu - \nu \rvert_{TV}.
+    \]
+\end{proposition}
+
+\begin{proof}
+    Let $\lambda = \mu + \nu$, then write $u = \frac{d\mu}{d\lambda}, v = \frac{d\nu}{d\lambda}$ and $\frac{d\eta}{d\lambda} = \min(a, b)$. Then the residuals $\mu' = \mu - \eta, \nu' = \nu - \eta$ are mutually singular and have the same mass $r = 1 - \eta(X) = \frac{1}{2} \displaystyle \int \lvert u - v \rvert d\lambda = \frac{1}{2} \lvert \mu - \nu \rvert_{TV}$.
+
+    Then for any $\pi \in \Gamma(\mu, \nu)$ define the diagonal submeasure by $\zeta(A) = \pi(\{(x, x): x \in A\})$, then $\zeta \leq \mu, \nu$ so its density wrt $\lambda$ is bounded by $\min(u, v)$. Consequently $\zeta \leq \eta$ since $\pi(\{x = y\}) \leq \eta(X)$ and $\displaystyle \int d_0(x, y)^p d\pi(x, y) = 1 - \pi({x = y}) \geq r$. If $r = 0$ then the bound is attained, but if $r > 0$ then let $\Delta(x) = (x,x)$ and set $\pi^* = \Delta_\# \eta + \frac{\mu' \otimes \nu'}{r}$ which is a coupling of $\mu$ and $\nu$. Since $\mu' \perp \nu'$ the product is not concentrated on the diagonal so the total mass is $r$, thus $\pi^*$ attains the lower bound.
+\end{proof}
+
+\begin{proposition}[Wasserstein Convergence]
+    Let $(X, d)$ be Polish, $1 \leq p < \infty$ and $\mu, \mu_n \in \mathcal{P}_p(X)$. For any refernce point $x_0$ the following are equivalent:
+    \begin{enumerate}
+        \item $\mathcal{W}_p(\mu_n, \mu) \rightarrow 0$,
+        \item $\mu_n \rightarrow \mu$ weakly and its $p$-th moments converge;
+        \[
+        \displaystyle \int d(x, x_0)^p d\mu_n(x) \rightarrow \int d(x, x_0)^p d\mu(x),
+        \]
+        \item $\mu_n \rightarrow \mu$ weakly and the $p$-th moments are uniformly integrable;
+        \[
+        \lim_{R \rightarrow \infty} \sup_n \displaystyle \int_{\{d(x, x_0) > R\}} d(x, x_0)^p d\mu_n(x) = 0.
+        \]
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    Assume (1), then $\mathcal{W}_1 \leq \mathcal{W}_p$ (By Jensen's Inequality), it follows that $\mathcal{W}_1(\mu_n, \mu) \rightarrow 0$ by the Squeeze Theorem. Then for every bounded 1-Lipschitz $f: X \rightarrow \mathbb{R}$ and coupling $\pi \in \Gamma(\mu_n, \mu)$,
+    \[
+    \bigg \lvert \displaystyle \int f d\mu_n - \int f d\mu \bigg \rvert = \bigg \lvert \int (f(x) - f(y)) d\pi(x, y) \bigg \rvert \leq \int \bigg \lvert f(x) - f(y) \bigg \rvert d\pi(x, y) \leq \int d(x, y) d\pi(x, y)
+    \]
+    So taking the infimum yields $\bigg \lvert \displaystyle \int_X f d\mu_n - \int_X f d\mu \bigg \rvert \leq \mathcal{W}_1(\mu_n, \mu) \rightarrow 0 \Rightarrow \mu_n \rightarrow \mu$ weakly. By the reverse triangle inequality of metrics,
+    \[
+    \bigg \lvert \bigg ( \displaystyle \int d(x, x_0)^p d\mu_n(x) \bigg )^\frac{1}{p} - \bigg ( \int d(x_0, y)^p d\mu(y) \bigg )^\frac{1}{p} \bigg \rvert \leq \bigg ( \int d(x, y)^pd\pi(x, y)\bigg )^\frac{1}{p}.
+    \]
+    Taking the infimum the LHS is bounded by $\mathcal{W}_p \rightarrow 0$ which yields (2).
+
+    To prove $(2) \rightarrow (1)$, by the Skorokhod Representation Theorem there exist random variables $X_n \sim \mu_n$ and $X \sim \mu$ on a common probability space that $X_n \xrightarrow{\text{a.s.}} X$. It follows that $d(X_n, x_0)^p \xrightarrow{\text{a.s.}} d(X, x_0)^p$ and by assumption the expectations converge so Scheffé's Lemma implies convergence in $L^1$ (i.e. $\mathbb{E}( \lvert d(X_n, x_0)^p - \mathbb{E}(d(X, x_0)^p) \rvert) \rightarrow 0$.), which uniform integrability of $\{d(X_n, x_0)^p\}_n$ follows thereafter.
+    
+    \bigskip
+    
+    Then we have $d(X_n, X)^p \leq 2^{p - 1}(d(X_n, x_0)^p + d(X, x_0)^p)$ implying that $\{d(X_n, X)\}_n$ is uniformly integrable and converges a.s. to 0, so by Vitali's Theorem $\mathbb{E}(d(X_n, X)^p) \rightarrow 0$. The probability law $\pi_n^*$ of $(X_n, X)$ is an admissible coupling of $(\mu_n, \mu)$ so $\mathcal{W}_p(\mu_n, \mu)^p \leq \mathbb{E}(d(X_n, X)^p) \rightarrow 0$ implies (1). 
+    
+    \bigskip
+    
+    To show $(3) \rightarrow (2)$ we will take a detour in the style of Villani Theorem 7.12 $\cite{villani}$ it suffices to show that (2) is equivalent to (4);
+    
+    \bigskip
+    
+    {\itshape (4) For continuous $\varphi: X \rightarrow \mathbb{R}$ satisfying \ the growth equation $\lvert \varphi(x) \rvert \leq C(1 + d(x_0, x)^p)$ for
+    some fixed $x_0 \in X, C \in \mathbb{R}$ then $\displaystyle \int \varphi d\mu_n \rightarrow \int \varphi d\mu$.}
+
+    Assuming (3) pick such $\varphi$ wrt (4), and decompose $\varphi = \varphi_R + \psi_R$ such that $\varphi_R = \min\{\varphi(x), C(1 + R^p)\}, \psi_R(x) = \varphi(x)- \varphi_R(x)$, clearly we have $\varphi_R(x) \leq Cd(x, x_0)^p \mathds{1}_{\{d(x_0, x) \geq R\}}$. Thenwe have
+    \[
+    \bigg \lvert \displaystyle \int \varphi d\mu_n - \int \varphi d\mu \bigg \lvert \leq \bigg \lvert \displaystyle \int \varphi_R d\mu_n - \int \varphi_R d\mu \bigg \rvert + C \int_{\{d(x_0, x) \geq R\}} d(x_0, x)^p d\mu_n(x)
+    \]
+    \[
+    + C \int_{\{d(x_0, x) \geq R\}} d(x_0, x)^p d\mu(x)
+    \]
+    It follows that
+    \[
+    \sup_n \bigg \lvert \displaystyle \int \varphi d\mu_n - \int \varphi d\mu \bigg \rvert \leq C \sup_n \int_{\{d(x_0, x) \geq R\}} d(x_0, x)^p d\mu_k(x) + C \sup_n \int_{\{d(x_0, x) \geq R\}} d(x_0, x)^p d\mu(x).  
+    \]
+    Then by uniform integrability $RHS \rightarrow 0$ for $R \rightarrow \infty$ therefore weak convergence of $\varphi$ holds; (2) immediately follows by taking equality of $\varphi$ in (4). 
+\end{proof}
+
+We finally conclude this chapter by introducing a bound on Wasserstein distances in finite spaces.
+
+\begin{proposition}[Total Variation Bounds of Wasserstein on Finite Spaces]
+    Let $(X, d)$ be a finite metric space and $d_{\min} = \min_{x \neq y}d(x, y) > 0, d_{\max} = \max_{x, y \in X} d(x, y) < \infty$. Then for $\mu, \nu \in \mathcal{P}(X),$
+    \[
+    \frac{d_{\min}}{2} \lvert \mu - \nu \rvert_{TV} \leq \mathcal{W}_1(\mu, \nu) \leq \frac{d_{\max}}{2}\lvert \mu - \nu \rvert_{TV}.
+    \]
+\end{proposition}
+
+\begin{proof}
+    Let $d_0$ be the discrete metric, clearly $d_{\min} d_0(x, y) \leq d(x, y) \leq d_{\max} d_0(x, y)$ so integrating wrt any coupling $\pi$ and taking the infimum via Proposition 3.11. 
+\end{proof}
 
 \newpage
 \section{Dual Problems}
@@ -1161,8 +1266,14 @@ G. Folland.
 
 \bibitem{villani}
 C. Villani.
-\textit{Optimal Transport: Old and New}.
-Springer, 2009.
+\textit{Topics in Optimal
+Transportation}.
+American Mathematical Society, 2003.
+
+\bibitem{santambrogio}
+F.~Santambrogio.
+\textit{Optimal Transport for Applied Mathematicians: Calculus of Variations, PDEs and Modeling}.
+Birkhäuser, 2015.
 
 \bibitem{galichon}
 G. Carlier, A. Galichon, and F. Santambrogio. 
@@ -1202,11 +1313,6 @@ Alexander Tong, and Titouan Vayer.
 \newblock \emph{Journal of Machine Learning Research},
   22(78):1--8, 2021.
 \newblock \url{http://jmlr.org/papers/v22/20-451.html}.
-
-\bibitem{santambrogio}
-F.~Santambrogio.
-\textit{Optimal Transport for Applied Mathematicians: Calculus of Variations, PDEs and Modeling}.
-Birkhäuser, 2015.
 
 \end{thebibliography}
 % ============================================================

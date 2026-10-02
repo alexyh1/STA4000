@@ -1003,7 +1003,7 @@ A necessary condition for discrete Kantorovich optimal transport couplings is th
 \section{Wasserstein Space}
 
 \subsection{Wasserstein Distance}
-Kantorovich Optimal Transport generalizes the Monge case where a genuine distance is defined between distributions under reguarlity conditions of the cost function. The proof of the result first relies on a "gluing lemma".
+Kantorovich Optimal Transport generalizes the Monge case where a genuine distance is defined between distributions under regularity conditions of the cost function, unlike when Monge distance fials under symmetry. The proof of the result first relies on a "gluing lemma".
 
 \begin{lemma}[Gluing Lemma]
     Let $(\mu, \nu, \gamma) \in \mathcal{M}_1^+(X) \times \mathcal{M}_1^+(Y) \times \mathcal{M}_1^+(Z)$ where $X, Y, Z$ are Polish spaces, given $\pi \in \Gamma(\mu, \nu), \xi \in \Gamma(\nu, \gamma)$, then there exists a probability measure $\sigma \in \mathcal{M}_1^+(X \times Y \times Z)$ such that 
@@ -1133,14 +1133,9 @@ We take a short detour to examine the topological properties related to the Wass
 
 For Proposition 3.9, all Wasserstein distances $\mathcal{W}_p$ for $p \geq 1$ induce the same topology, although not all distances are the same.
 
-\bigskip
-In fact in compact spaces, $\mathcal{W}_p(\mu_n, \mu) \rightarrow 0 \Leftrightarrow \mu_n \rightarrow \mu$ weakly. This is not necessarily true when the underlying space is not compact.
-
 \begin{definition}[Weak Convergence of Measures]
     A sequence of probability measures $\mu_n \rightarrow \mu \in \mathcal{M}_1^+(X)$ converges weakly iff $\displaystyle \int_X f d\mu_n \rightarrow \int_X f d\mu$ for all bounded continuous functions $f: X \rightarrow \mathbb{R}$.
 \end{definition}
-
-On Polish spaces we have the incredibly clean result in the equivalent definitions of Wasserstein distances; in fact, Wasserstein convergence is equivalent to weak convergence in the moments.
 
 \begin{proposition}[Total Variation as Wasserstein for Discrete Metric]
     Let $X$ be Borel, $\mu, \nu \in \mathcal{M}_1^+(X)$, and $d_0(x, y) = 0$ when $x = y$ and $1$ otherwise, then for $p \geq 1$,
@@ -1154,6 +1149,8 @@ On Polish spaces we have the incredibly clean result in the equivalent definitio
 
     Then for any $\pi \in \Gamma(\mu, \nu)$ define the diagonal submeasure by $\zeta(A) = \pi(\{(x, x): x \in A\})$, then $\zeta \leq \mu, \nu$ so its density wrt $\lambda$ is bounded by $\min(u, v)$. Consequently $\zeta \leq \eta$ since $\pi(\{x = y\}) \leq \eta(X)$ and $\displaystyle \int d_0(x, y)^p d\pi(x, y) = 1 - \pi({x = y}) \geq r$. If $r = 0$ then the bound is attained, but if $r > 0$ then let $\Delta(x) = (x,x)$ and set $\pi^* = \Delta_\# \eta + \frac{\mu' \otimes \nu'}{r}$ which is a coupling of $\mu$ and $\nu$. Since $\mu' \perp \nu'$ the product is not concentrated on the diagonal so the total mass is $r$, thus $\pi^*$ attains the lower bound.
 \end{proof}
+
+We arrive at one of the strongest results of Wasserstein distance that introduce equivalent notations of convergence.
 
 \begin{proposition}[Wasserstein Convergence]
     Let $(X, d)$ be Polish, $1 \leq p < \infty$ and $\mu, \mu_n \in \mathcal{P}_p(X)$. For any refernce point $x_0$ the following are equivalent:
@@ -1171,7 +1168,7 @@ On Polish spaces we have the incredibly clean result in the equivalent definitio
 \end{proposition}
 
 \begin{proof}
-    Assume (1), then $\mathcal{W}_1 \leq \mathcal{W}_p$ (By Jensen's Inequality), it follows that $\mathcal{W}_1(\mu_n, \mu) \rightarrow 0$ by the Squeeze Theorem. Then for every bounded 1-Lipschitz $f: X \rightarrow \mathbb{R}$ and coupling $\pi \in \Gamma(\mu_n, \mu)$,
+    Assume (1), then $\mathcal{W}_1 \leq \mathcal{W}_p$ (By Jensen's Inequality), it follows $\mathcal{W}_1(\mu_n, \mu) \rightarrow 0$ via Squeeze Theorem. Then for every bounded 1-Lipschitz $f: X \rightarrow \mathbb{R}$ and coupling $\pi \in \Gamma(\mu_n, \mu)$,
     \[
     \bigg \lvert \displaystyle \int f d\mu_n - \int f d\mu \bigg \rvert = \bigg \lvert \int (f(x) - f(y)) d\pi(x, y) \bigg \rvert \leq \int \bigg \lvert f(x) - f(y) \bigg \rvert d\pi(x, y) \leq \int d(x, y) d\pi(x, y)
     \]
@@ -1181,7 +1178,7 @@ On Polish spaces we have the incredibly clean result in the equivalent definitio
     \]
     Taking the infimum the LHS is bounded by $\mathcal{W}_p \rightarrow 0$ which yields (2).
 
-    To prove $(2) \rightarrow (1)$, by the Skorokhod Representation Theorem there exist random variables $X_n \sim \mu_n$ and $X \sim \mu$ on a common probability space that $X_n \xrightarrow{\text{a.s.}} X$. It follows that $d(X_n, x_0)^p \xrightarrow{\text{a.s.}} d(X, x_0)^p$ and by assumption the expectations converge so Scheffé's Lemma implies convergence in $L^1$ (i.e. $\mathbb{E}( \lvert d(X_n, x_0)^p - \mathbb{E}(d(X, x_0)^p) \rvert) \rightarrow 0$.), which uniform integrability of $\{d(X_n, x_0)^p\}_n$ follows thereafter.
+    To prove $(2) \rightarrow (1)$, by the Skorokhod Representation Theorem there exist random variables $X_n \sim \mu_n$ and $X \sim \mu$ on a common probability space that $X_n \xrightarrow{\text{a.s.}} X$. It follows that $d(X_n, x_0)^p \xrightarrow{\text{a.s.}} d(X, x_0)^p$ and by assumption the expectations converge so Scheffé's Lemma implies convergence in $L^1$ (i.e. $\mathbb{E}( \lvert d(X_n, x_0)^p - \mathbb{E}(d(X, x_0)^p) \rvert) \rightarrow 0$.), which uniform integrability of $\{d(X_n, x_0)^p\}_n$ follows thereafter (which is actually (3)).
     
     \bigskip
     
@@ -1189,14 +1186,14 @@ On Polish spaces we have the incredibly clean result in the equivalent definitio
     
     \bigskip
     
-    To show $(3) \rightarrow (2)$ we will take a detour in the style of Villani Theorem 7.12 $\cite{villani}$ it suffices to show that (2) is equivalent to (4);
+    To show $(3) \rightarrow (2)$ we will take a detour in the style of Villani Theorem 7.12 $\cite{villani}$ it suffices to show that (3) is equivalent to (4);
     
     \bigskip
     
     {\itshape (4) For continuous $\varphi: X \rightarrow \mathbb{R}$ satisfying \ the growth equation $\lvert \varphi(x) \rvert \leq C(1 + d(x_0, x)^p)$ for
     some fixed $x_0 \in X, C \in \mathbb{R}$ then $\displaystyle \int \varphi d\mu_n \rightarrow \int \varphi d\mu$.}
 
-    Assuming (3) pick such $\varphi$ wrt (4), and decompose $\varphi = \varphi_R + \psi_R$ such that $\varphi_R = \min\{\varphi(x), C(1 + R^p)\}, \psi_R(x) = \varphi(x)- \varphi_R(x)$, clearly we have $\varphi_R(x) \leq Cd(x, x_0)^p \mathds{1}_{\{d(x_0, x) \geq R\}}$. Thenwe have
+    Assuming (3) pick such $\varphi$ wrt (4), and decompose $\varphi = \varphi_R + \psi_R$ such that $\varphi_R = \min\{\varphi(x), C(1 + R^p)\}, \psi_R(x) = \varphi(x)- \varphi_R(x)$, clearly we have $\psi_R(x) \leq Cd(x, x_0)^p \mathds{1}_{\{d(x_0, x) \geq R\}}$. Then we have
     \[
     \bigg \lvert \displaystyle \int \varphi d\mu_n - \int \varphi d\mu \bigg \lvert \leq \bigg \lvert \displaystyle \int \varphi_R d\mu_n - \int \varphi_R d\mu \bigg \rvert + C \int_{\{d(x_0, x) \geq R\}} d(x_0, x)^p d\mu_n(x)
     \]
@@ -1210,10 +1207,33 @@ On Polish spaces we have the incredibly clean result in the equivalent definitio
     Then by uniform integrability $RHS \rightarrow 0$ for $R \rightarrow \infty$ therefore weak convergence of $\varphi$ holds; (2) immediately follows by taking equality of $\varphi$ in (4). 
 \end{proof}
 
-We finally conclude this chapter by introducing a bound on Wasserstein distances in finite spaces.
+The following example is a simple sanity check of Proposition 3.12;
+\begin{example}
+    Let $(\mathbb{R}, \lvert \rvert)$ be a metric space and $\mu_n \sim N(0, 1 - \frac{1}{2n}), \mu \sim N(0, 1)$, from Proposition 1.29 we have
+    \[
+    \mathcal{W}_2(\mu_n, \mu) = \sqrt{(0 - 0)^2 + (1 - \frac{1}{2n} - 1)^2} = \frac{1}{2n} \rightarrow 0 \ \text{as} \ n \rightarrow \infty \ (1).
+    \]
+
+\end{example}
+
+Then $\mu_n \rightarrow \mu$ weakly such that for continuous bounded $f: \mathbb{R} \rightarrow \mathbb{R}$ and $Z \sim N(0, 1), X_n = \sqrt{1 - \frac{1}{2n}}Z \sim N(0, 1 - \frac{1}{2n})$ such that $X_n\xrightarrow{\text{a.s.}}Z$, then $f(X_n) \leq \lVert f \rVert_\infty < \infty$, invoking continuity of $f$ and the Dominated Convergence Theorem we have $\mathbb{E}(f(X_n)) \rightarrow \mathbb{E}(f(Z))$ satisfying weak convergence. Then WLOG let $x_0 = 0$ such that by Radon-Nikodym
+\[
+\displaystyle \int z^2 d\mu_n(z) =  \mathbb{E}_{\mu_n}(Z^2) = \text{Var}_{\mu_n} (Z) + \mathbb{E}_{\mu_n}(Z)^2 = 1- \frac{1}{2n} \rightarrow 1
+\]
+\[
+= \text{Var}_{\mu}(Z) + \mathbb{E}_\mu(Z)^2 = \mathbb{E}_{\mu}(Z^2) = \int z^2 d\mu(z) \ (2). 
+\]
+To show uniform integrability, let $R > 0$, then
+\[
+\sup_n \displaystyle \int_{\lvert x \rvert > R} x^2 d\mu_n(x) \leq \int_{\lvert x \rvert > R} x^2 \phi(x) dx = 2 \int_R^\infty x^2\phi(x) dx = 2(R\phi(R) + 1 - \Phi(R)) \rightarrow 0
+\]
+as $R \rightarrow \infty$ such that (3) holds; thus all 3 formulations are equivalent. \hfill \(\square\) 
+
+\bigskip
+We finally conclude this chapter by bounding Wasserstein distances in finite spaces.
 
 \begin{proposition}[Total Variation Bounds of Wasserstein on Finite Spaces]
-    Let $(X, d)$ be a finite metric space and $d_{\min} = \min_{x \neq y}d(x, y) > 0, d_{\max} = \max_{x, y \in X} d(x, y) < \infty$. Then for $\mu, \nu \in \mathcal{P}(X),$
+    Given $(X, d)$ and $d_{\min} = \min_{x \neq y}d(x, y) > 0, d_{\max} = \max_{x, y \in X} d(x, y) < \infty$. Then for $\mu, \nu \in \mathcal{P}(X),$
     \[
     \frac{d_{\min}}{2} \lvert \mu - \nu \rvert_{TV} \leq \mathcal{W}_1(\mu, \nu) \leq \frac{d_{\max}}{2}\lvert \mu - \nu \rvert_{TV}.
     \]
@@ -1225,6 +1245,162 @@ We finally conclude this chapter by introducing a bound on Wasserstein distances
 
 \newpage
 \section{Dual Problems}
+
+\subsection{Continuous Duality}
+We proceed with a basic review of duality in classical optimization before drawing parallels to the optimal transport setting.
+
+\begin{theorem}[Lagrangian Multipliers]
+    Let $f: \mathbb{R}^n \rightarrow \mathbb{R}, \ g: \mathbb{R}^n \rightarrow \mathbb{R}^p, \ h: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be $\mathcal{C}^2$ functions, then if $x_0$ is a local minimum of (1)
+    \[
+    \min f(x) \text{ such that } g(x) \geq 0, \ h(x) = 0
+    \]
+    and regular (such that $g(x_0) = 0$ and $\nabla h(x_0), \nabla g(x_0)$ are linearly independent), then there exists $\lambda \in \mathbb{R}^m, \mu \in \mathbb{R}^p_{\geq 0}$ such that
+    \[
+    \nabla f(x_0) - \lambda^T \nabla h(x_0) - \mu^T \nabla g(x_0) = 0, \ \mu^T g(x_0) = 0
+    \]
+    such that $\nabla^2 L(x_0) = \nabla^2 f(x_0) - \lambda^T \nabla^2h(x_0) - \mu^T \nabla g(x_0)$ is PSD on the tangent space 
+    \[
+    M = \{d \in \mathbb{R}^n: \nabla h_i(x_0)^T d = 0, \nabla g_j(x_0)^Td = 0 \text{ for } i \in [m], j \in [p]\}.
+    \]
+    $\mu^T g(x_0) = 0$ is known as the complementary slackness condition.
+\end{theorem}
+
+\begin{definition}[Dual Function]
+    The dual function to (1) is given by (2)
+    \[
+    \phi(\lambda, \mu) = \inf_{x \in \mathbb{R}^n} \{f(x) - \lambda^T h(x) - \mu^T g(x)\} \text{ for } (\lambda, \mu) \in \mathbb{R}^m \times \mathbb{R}^p_{\geq 0}.
+    \]
+\end{definition}
+
+\begin{definition}[Dual Problem]
+    The dual problem to (2) is given by (3)
+    \[
+    \phi_0 = \sup_{(\lambda, \mu) \in \mathbb{R}^m \times \mathbb{R}^p_{\geq 0}} \phi(\lambda, \mu).
+    \]
+\end{definition}
+
+\begin{lemma}[Weak Duality]
+    Let $f_0$ denote the minimum associated to (1), then $\phi_0 \leq f_0$.
+\end{lemma}
+
+\begin{proof}
+    $\inf_{x} L(x, \lambda, \mu) \leq L(x, \lambda, \mu) \leq f(x)$ for all feasible $x, \lambda, \mu$.
+\end{proof}
+
+\begin{theorem}[Zero Order Sufficient Condition]
+    If (1) has feasible solution $x_0$ and (3) has a feasible solution $\lambda_0, \mu_0$ such that $f(x_0) = \phi(\lambda_0, \mu_0)$ then $x_0$ is the global minimizer of (1) and $(\lambda_0, \mu_0)$ is the global maximizer of (3). 
+\end{theorem}
+
+\begin{proof}
+    $\inf_{x} \{f(x): h(x) = 0, g(x) \geq 0\} \leq f(x_0) = \phi(\lambda_0, \mu_0) \leq \sup_{\lambda, \mu} \phi(\lambda, \mu) = \phi_0 \leq f_0.$
+\end{proof}
+
+\begin{theorem}[Strong Duality]
+    Assume $f \in \mathcal{C}^1(\mathbb{R}^n)$ is convex, $h(x) = Ax - b$ affine for $A \in \mathbb{R}^{m \times n}, b \in \mathbb{R}^m$, $g \in \mathcal{C}^1(\mathbb{R}^n, \mathbb{R}^p)$ concave and (1) has a (global) minimizer $x_0$ then $\phi_0 = f_0$.
+\end{theorem}
+
+\begin{proof}
+    Via convexity of Lagrangian function and KKT conditions then $\mu_0^T g(x_0) = 0$. Then $\phi(\lambda_0, \mu_0) = f(x_0) - \lambda_0^T h(x_0) - \mu_0^Tg(x_0) - f(x_0) = f_0$, ZOSC yields the result.
+\end{proof}
+
+\newpage
+We segue into Kantorovich duality using analogues from convex optimization.
+
+\begin{definition}[Admissible Potentials]
+    Let $c \in \mathcal{C}(X \times Y)$, then the set of admissible continuous potentials is defined by
+    \[
+    \mathcal{R}(c) = \{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y), f(x) + g(y) \leq c(x, y) \ \forall (x, y) \in X \times Y\}.
+    \]
+\end{definition}
+
+Immediately the admissible potentials $f, g$ can be seen as Lagrangian Multipliers and we get the Lagrangian function
+\[
+L(\pi, f, g) = \displaystyle \int_X f(x) d\mu(x) + \int_Y g(y) d\nu(y) + \int_{X \times Y} (c(x, y) - f(x) - g(y))d\pi(x, y).
+\]
+Then the dual function is given by $\phi(f, g) = \inf_{\pi \in \mathcal{P}(X \times Y)} L(\pi, f, g)$ and the dual problem along with weak duality yields 
+\[
+\phi_0 = \sup_{(f, g)\in \mathcal{R}(c)} \phi(f, g) = \sup_{(f, g)\in \mathcal{R}(c)} \displaystyle \int_X f(x) d\mu(x) + \int_Y g(y) d\nu(y) \leq \mathcal{L}_c(\pi_0).
+\]
+
+\begin{theorem}[Kantorovich Duality]
+    Let $X, Y$ be compact metric spaces, $\mu \in \mathcal{P}(X), \ \nu \in \mathcal{P}(Y), \ c: X \times Y \rightarrow (-\infty, \infty]$ be continuous, then
+    \[
+    \inf_{\pi \in \Gamma(\mu, \nu)} \displaystyle \int_{X \times Y} c(x, y) d\pi(x, y) = \sup_{(f, g) \in \mathcal{R}(c)} \bigg( \int_X f d\mu + \int_Y g d\nu\bigg).
+    \]
+\end{theorem}
+
+\begin{proof}
+    We use the Lagrangian Multiplier setup \[
+    L(\pi, f, g) = \displaystyle \int_X f(x) d\mu(x) + \int_Y g(y) d\nu(y) + \int_{X \times Y} (c(x, y)-f(x)-g(y))d\pi(x, y)
+    \]
+    Taking the supremum over all continuous multipliers $(f, g),$
+    \[
+    \sup_{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y)} L(\pi, f, g) = \displaystyle \int_{X \times Y} c \ d\pi + \sup_{f \in \mathcal{C}(X)} \bigg ( \int_X f d\mu - \int_X f d\pi \bigg ) + \sup_{g \in \mathcal{C}(Y)} \bigg ( \int_Y g d\nu - \int_Y g d\pi \bigg )
+    \]
+    And the last two terms are 0 if $\pi_1 = \mu$ and $\pi_2 = \nu$ respectively otherwise one can find a divergent sequence of continuous functions $f$ or $g$ when $\pi_1 \neq \mu$ or $\pi_2 \neq \nu$ on a set of positive measure that blows up to infinity. Therefore
+    \[
+    \inf_{\pi \in \mathcal{P}(X \times Y)} \sup_{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y)} L(\pi, f, g) = \inf_{\pi \in \Gamma(\mu, \nu)} \int c(x, y) d\pi(x, y)
+    \]
+    Which returns the primal problem. Then taking the infimum over all probability measures over the product yields
+    \[
+    \inf_{\pi \in \mathcal{P}(X \times Y)} L(\pi, f, g) = \inf_{\pi \in \mathcal{P}(X \times Y)} \int (c(x, y) - f(x) - g(y))d\pi(x, y) + \int f(x)d\mu(x) + \int g(y)d\nu(y)
+    \]
+    Analogously the first term is 0 iff $f$ and $g$ are admissible otherwise one can construct a sequence blowing up to $-\infty$, so take the supremum over all continuous $f, g$ to get
+    \[
+    \sup_{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y)} \inf_{\pi \in \mathcal{P}(X \times Y)} L(\pi, f, g) = \sup_{(f, g) \in \mathcal{R}(c)} \bigg (\int f(x)d\mu(x) + \int g(y)d\nu(y) \bigg )
+    \]
+    which returns exactly the dual problem.
+    
+    \bigskip
+    Then $\mathcal{P}(X \times Y)$ is tight (Prop 2.6) since $X, Y$ are compact and $\mathcal{P}(X), \mathcal{P}(Y)$ are both tight respectively, then by Prokhorov $\mathcal{P}(X \times Y)$ is weakly compact, and convexity follows immediately. Then $\mathcal{C}(X) \times \mathcal{C}(Y)$ is convex, and $L(\pi, f', g')$ is affine in $\pi$ for fixed potentials via linearity of integrals and $L(\pi', f, g)$ is affine in $(f, g)$ as well so continuity, convexity and concavity conditions hold therefore Sion's minimax theorem can be applied such that
+
+    \[
+    LHS = \inf_{\pi \in \mathcal{P}(X \times Y)} \sup_{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y)} L(\pi, f, g) = \sup_{(f, g) \in \mathcal{C}(X) \times \mathcal{C}(Y)} \inf_{\pi \in \mathcal{P}(X \times Y)} L(\pi, f, g)= RHS.
+    \]
+\end{proof}
+
+We observe an immediate parallel of the complementary slackness condition in the Kantorovich problem analogous to Theorem 4.1
+\begin{proposition}[Complementary Slackness]
+    For $\pi \in \Gamma(\mu, \nu), (f, g) \in \mathcal{R}(c)$, then
+    \[
+    \displaystyle \int c(x, y) d\pi(x, y) - \int f(x)d\mu(x) - \int g(y)d\nu(y) = \int ( c(x, y) - f(x) - g(y))d\pi(x, y) \geq 0.
+    \]
+    Equality holds iff primal-dual optimality is reached; i.e. supp$(\pi) \subset \{(x, y) \in X \times Y: f(x) + g(y) = c(x, y)\}$.
+\end{proposition}
+
+\begin{proof}
+    The main statement and the reverse direction are immediate by admissibility of potentials and strong duality. Now suppose that there exist $(x, y) \in \text{supp}(\pi)$ such that $f(x) + g(y) < c(x, y)$; by continuity of the slack there exists open neighborhoods $U \times V \ni (x, y)$ such that $\pi(U \times V) > 0$ and $f(x') + g(y') < c(x', y')$ for all $(x', y') \in U \times V$. Then
+    \[
+    \displaystyle \int (c(x, y) - f(x) - g(y))d\pi(x, y) \geq \int_{U \times V} (c(x, y) - f(x) - g(y))d\pi(x, y) > 0
+    \]
+    contradicts the assumption that no slack remains.
+\end{proof}
+
+\subsection{Discrete Duality}
+The dual formulation of the discrete Kantorovich problem becomes much more faithful to the original nonlinear optimization setting.
+
+\begin{definition}[Admissible Potentials]
+    For a discrete problem with marginal sizes $n$ and $m$ such that $\mu = a^T \delta_x$ and $\nu = b^T \delta_y$ and cost matrix $C \in \mathbb{R}^{n \times m}$, the set of admissible potentials is denoted by
+    \[
+    R(C) = \{(f, g) \in \mathbb{R}^n \times \mathbb{R}^m: \forall i, j \in [n] \times [m], f_i + g_j \leq C_{ij}\}.
+    \]
+\end{definition}
+
+The results from the discrete setting are hence much more straight forward;
+
+\begin{proposition}[Kantorovich Duality]
+    \[
+    L_C(a, b) = \max_{(f, g) \in R(C)} \langle f, a \rangle + \langle g, b \rangle.
+    \]
+\end{proposition}
+
+\begin{proposition}[Complementary Slackness]
+    For all $P \in U(a, b)$ and $(f, g) \in R(C)$ we have
+    \[
+    \langle C, P \rangle - \langle f, a \rangle - \langle g, b \rangle = \sum_{i = 1}^n \sum_{j = 1}^m P_{ij} (C_{ij} - f_i - g_j) \geq 0.
+    \]
+    Equality holds iff strong duality attained; i.e. supp$(P) \subset \{(i, j) \in [n] \times [m]; f_i + g_j = C_{ij}\}$.
+\end{proposition}
 
 \newpage
 \section{Sinkhorn Regularization}
@@ -1240,12 +1416,6 @@ We finally conclude this chapter by introducing a bound on Wasserstein distances
 
 \newpage
 \section{Generalized Optimal Transport Problems}
-
-\newpage
-\section{Dynamic Optimal Transport}
-
-\newpage
-\section{Wasserstein Gradient Flows}
 
 \end{spacing}
 \newpage
